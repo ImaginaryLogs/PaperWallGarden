@@ -8,8 +8,8 @@ import rehypeKatex from 'rehype-katex';
 import { resolve } from 'path';
 
 export default defineConfig({
-  site: 'https://YOUR-USERNAME.github.io',
-  base: '/YOUR-REPO-NAME',
+  site: 'https://ImaginaryLogs.github.io',
+  base: '/',
 
   integrations: [
     react(),   // For canvas + playground components

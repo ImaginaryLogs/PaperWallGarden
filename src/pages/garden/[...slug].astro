@@ -8,9 +8,9 @@ import path from 'node:path';
 
 export async function getStaticPaths() {
   // Find all .canvas files in the vault
-  const canvasFiles = await glob('obsidian-vault/**/*.canvas');
+  const canvasFiles = await glob('obsidian/**/*.canvas');
   return canvasFiles.map(f => ({
-    params: { slug: f.replace('obsidian-vault/', '').replace('.canvas', '') },
+    params: { slug: f.replace('obsidian/', '').replace('.canvas', '') },
     props: { filePath: f },
   }));
 }

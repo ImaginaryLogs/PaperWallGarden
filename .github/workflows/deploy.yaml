@@ -88,7 +88,7 @@ jobs:
       - name: Create vault symlink (if not committed)
         run: |
           if [ ! -L src/content/garden ]; then
-            ln -sf ../../../obsidian-vault src/content/garden
+            ln -sf ../../../obsidian src/content/garden
           fi
 
       - name: Build Astro
