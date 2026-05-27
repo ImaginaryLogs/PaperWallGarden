@@ -1,0 +1,21 @@
+---
+// src/components/shared/CrossLink.astro
+// Renders a visually distinct "portal" link between the two sections
+interface Props {
+  to: string;       // e.g. "garden:quantum/bloch-sphere" or "playground:quantum-circuit"
+  label?: string;
+}
+
+const { to, label } = Astro.props;
+const [section, path] = to.split(':');
+const href = section === 'garden' ? `/garden/${path}` : `/playground/${path}`;
+const icon = section === 'garden' ? '🌿' : '⚗️';
+const sectionLabel = section === 'garden' ? 'Digital Garden' : 'Playground';
+---
+
+<a href={href} class={`cross-link cross-link--${section}`}>
+  <span class="cross-link__icon">{icon}</span>
+  <span class="cross-link__label">{sectionLabel}</span>
+  <span class="cross-link__title">{label || path}</span>
+  <span class="cross-link__arrow">↗</span>
+</a>

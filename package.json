@@ -28,5 +28,8 @@
     "remark-obsidian-callout": "^1.5.1",
     "remark-wiki-link": "^2.0.1",
     "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1"
   }
 }

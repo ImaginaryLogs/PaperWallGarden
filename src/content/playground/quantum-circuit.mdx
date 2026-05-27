@@ -1,0 +1,39 @@
+---
+// src/content/playground/quantum-circuit.mdx
+title: "Interactive Quantum Circuit Simulator"
+description: "Apply quantum gates and visualize qubit state on the Bloch sphere"
+tags: ["quantum", "wasm", "interactive"]
+crossLinks:
+  - garden: "quantum/bloch-sphere-notes"   # ← ODG cross-reference
+---
+
+import { WasmLoader } from '../../components/playground/WasmLoader';
+import BlochSphere from '../../components/playground/BlochSphere';
+import CircuitEditor from '../../components/playground/CircuitEditor';
+
+# Quantum Circuit Simulator
+
+This playground lets you build quantum circuits gate-by-gate and observe
+the resulting qubit state live on the [Bloch sphere](/garden/quantum/bloch-sphere-notes).
+
+> See also: [[bloch-sphere-notes]] in the Digital Garden for the mathematical
+> derivation of Bloch sphere coordinates.
+
+<WasmLoader modulePath="/wasm/quantum-sim/quantum_sim.js">
+  {(api, ready) => (
+    ready ? (
+      <div className="circuit-playground">
+        <CircuitEditor quantumApi={api} />
+        <BlochSphere state={api.getState()} />
+      </div>
+    ) : (
+      <div className="loading-wasm">⚙️ Compiling quantum simulation engine...</div>
+    )
+  )}
+</WasmLoader>
+
+## How it Works
+
+The simulation core is written in **Rust** and compiled to WebAssembly. Each
+gate operation runs natively at near-native speed in your browser with zero
+server round-trips. The math below describes what the Hadamard gate does...
