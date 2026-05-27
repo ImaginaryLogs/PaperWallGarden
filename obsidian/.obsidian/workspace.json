@@ -1,0 +1,322 @@
+{
+  "main": {
+    "id": "41e72d2995893180",
+    "type": "split",
+    "children": [
+      {
+        "id": "c91ded2d5553f5f7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dea6871bd3f74b54",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Application of Computational Chemistry - Eigenvalues.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Application of Computational Chemistry - Eigenvalues"
+            }
+          },
+          {
+            "id": "d0352a52290cd432",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Application of Computational Chemistry - Eigenstates.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Application of Computational Chemistry - Eigenstates"
+            }
+          },
+          {
+            "id": "9672d5b1ea0de3b8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Application of Computational Chemistry - Eigenbasis.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Application of Computational Chemistry - Eigenbasis"
+            }
+          },
+          {
+            "id": "44afc8f82d48544e",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Canvas Map.canvas",
+                "viewState": {
+                  "x": 4629.7984393392435,
+                  "y": -2026.8608377139196,
+                  "zoom": -0.7323829450822896
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Canvas Map"
+            }
+          },
+          {
+            "id": "66ba7e7a32829981",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Canvas Map.canvas",
+                "viewState": {
+                  "x": 6369.984750899652,
+                  "y": -2432.248150815486,
+                  "zoom": -0.2717343651883301
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Canvas Map"
+            }
+          },
+          {
+            "id": "75b5756f2d16c81b",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Canvas Map.canvas",
+                "viewState": {
+                  "x": 5453.344023299324,
+                  "y": -3085.4729747239603,
+                  "zoom": -1.5457056174848023
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Canvas Map"
+            }
+          },
+          {
+            "id": "f891db801f078eef",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Fermion-to-Qubit Mappings.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Fermion-to-Qubit Mappings"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "183491b08b2c897c",
+    "type": "split",
+    "children": [
+      {
+        "id": "811717b36a0d7e34",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4c310d27b14bc5cb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "7beac5d220b8c99e",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "ca18d98b0853a437",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "065f0b4cc006bf02",
+    "type": "split",
+    "children": [
+      {
+        "id": "70e760d114d59f75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7b704ec3b2efb012",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Canvas Map.canvas",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Canvas Map"
+            }
+          },
+          {
+            "id": "5ac96aff0ebde1d7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "metanotes/Zettelkesten.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Zettelkesten"
+            }
+          },
+          {
+            "id": "63bd2fbfcf186e5d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "c21153d9750e152d",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "a8cd061c20956ca4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "metanotes/Zettelkesten.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Zettelkesten"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "4c310d27b14bc5cb",
+  "lastOpenFiles": [
+    "Chemistry Basis Set.md",
+    "Applications of Eigenproblems Computational Chemistry.md",
+    "Application of Computational Chemistry - Eigenvalues.md",
+    "Application of Computational Chemistry - Eigenbasis.md",
+    "Hamiltonian.md",
+    "Methods for the Electronic Hamiltonian.md",
+    "Minimal Basis Sets.md",
+    "Canvas Map.canvas",
+    "Example through LiH.md",
+    "Solving for Singular Hydrogen.md",
+    "Fermion-to-Qubit Mappings.md",
+    "Fermion-to-Qubit Mappings.md",
+    "Hydrogen  Example.md",
+    "Application of Computational Chemistry - Eigenstates.md",
+    "Pasted image 20260526075539.png",
+    "Pasted image 20260526075444.png",
+    "Pasted image 20260526075215.png",
+    "Quantum_harmonic_oscillators_animation.gif",
+    "Pasted image 20260526075026.png",
+    "Pasted image 20260526074930.png",
+    "Solving Eigenstates.md",
+    "Electronic Structure Problem.md",
+    "Ground State Algorithms.md",
+    "Ground State Problem.md",
+    "Multireference Chemistry.md",
+    "Quantum Chemistry Challenges.md",
+    "Untitled.md",
+    "Time Evolution Problem.md",
+    "Thermal Average.md",
+    "Quantum Merlin-Arthur Class.md",
+    "Methods.md",
+    "unorganized/Paper - Quantum Algorithms for Quantum Chemistry and Quantum Materials Science.md",
+    "references/1808.10402v3.pdf",
+    "references/quantum-algorithms-for-quantum-chemistry-and-quantum-materials-science.pdf",
+    "references/2301.04114v1.pdf",
+    "references",
+    "unorganized",
+    "metanotes/Untitled",
+    "world",
+    "metanotes"
+  ]
+}

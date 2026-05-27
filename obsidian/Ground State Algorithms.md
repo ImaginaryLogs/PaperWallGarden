@@ -1,0 +1,8 @@
+
+| Algorithm                                 | Target              | Circuit Depth           | Measurement Cost             | Error Scaling                  | Hardware Era   | Key Constraint                           |
+| ----------------------------------------- | ------------------- | ----------------------- | ---------------------------- | ------------------------------ | -------------- | ---------------------------------------- |
+| **VQE** (Variational Quantum Eigensolver) | Ground state energy | Shallow (NISQ-friendly) | O(1/ε²) — slow convergence   | Variational upper bound        | NISQ           | Ansatz quality; barren plateau problem   |
+| **QPE** (Quantum Phase Estimation)        | Exact eigenvalues   | Deep O(1/ε) per run     | O(log 1/ε) runs              | Inverse poly in circuit depth  | Fault-Tolerant | Needs controlled-U; good initial overlap |
+| **Adiabatic State Prep**                  | Ground state        | Deep (slow ramp)        | O(1) measurement after prep  | T > ε/g²_min                   | Either         | Fails if gap closes; unknown spectrum    |
+| **QITE** (Quantum Imaginary-Time Evo.)    | Ground state        | Moderate, grows         | Many local measurements      | Exact in infinite time         | Near-term      | Domain C grows → overhead blows up       |
+| **Adapt-VQE**                             | Ground state        | Grows iteratively       | High (gradient measurements) | Better than uCC at fixed depth | NISQ           | Many operator gradient evaluations       |

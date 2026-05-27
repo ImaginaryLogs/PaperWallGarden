@@ -1,0 +1,43 @@
+{
+	"nodes":[
+		{"id":"537c63440818939a","type":"group","x":-2980,"y":-4200,"width":5940,"height":3980,"label":"Computational Chemistry"},
+		{"id":"01066344b3b34b81","type":"text","text":"# Mermaid Map of Methods solving for Electronic Hamiltonian\n```mermaid\ngraph TD\n\n    %% Style Definitions\n\n    classDef operator fill:#f9f,stroke:#333,stroke-width:2px;\n\n    classDef math fill:#bbf,stroke:#333,stroke-width:1px;\n\n    classDef physical fill:#bfb,stroke:#333,stroke-width:1px;\n\n    %% Core Electronic Hamiltonian\n\n    H_elec[Electronic Hamiltonian Operator] -->|Solved via Quantum Mechanics| SE[Schrödinger Equation]\n\n    %% Branching into the two conceptual layers\n\n    SE --> MeanField[1\\. One-Electron Approximation <br> e.g., Hartree-Fock]\n\n    SE --> Exact[2\\. Many-Electron Reality <br> e.g., Full CI]\n\n  \n\n    %% One-Electron Layer\n\n    MeanField --> Fock[Fock Matrix / One-Electron Hamiltonian]\n\n    Fock -->|Diagonalization| OEigen[Eigen Problem]\n\n    OEigen -->|Eigenvalues| OEnergies[Orbital Energies <br> HOMO, LUMO, etc.]\n\n    OEigen -->|Eigenvectors| OShapes[Molecular Orbitals <br> Spatial Wavefunctions / Shapes]\n\n    %% Many-Electron Layer\n\n    Exact --> HMatrix[Full Hamiltonian Matrix]\n\n    OEnergies & OShapes -->|Combined into| Configurations[Slater Determinants <br> Orbital Configurations]\n\n    Configurations --> HMatrix\n\n    HMatrix -->|Diagonalization| MEigen[Eigen Problem]\n\n    MEigen -->|Eigenvalues| StateE[Total Molecular Energy <br> Ground & Excited States]\n\n    MEigen -->|Eigenvectors| StateWave[Many-Electron Wavefunction <br> State Eigenbasis Mix]\n\n  \n\n    %% Connecting back to Chemistry\n\n    OEnergies --> PhysicalArrangement[ORBITAL ARRANGEMENT & SPECTROSCOPY]\n\n    OShapes --> PhysicalArrangement\n\n    StateWave --> ChemicalBehavior[CHEMICAL REACTIVITY & GEOMETRY]\n\n    StateE --> ChemicalBehavior\n\n  \n\n    %% Applying Classes\n\n    class H_elec,Fock,HMatrix operator;\n\n    class OEigen,MEigen,SE math;\n\n    class OEnergies,OShapes,StateE,StateWave,PhysicalArrangement,ChemicalBehavior physical;\n```\n","x":-780,"y":-4108,"width":1180,"height":1680},
+		{"id":"c67263a4e896daf9","type":"file","file":"Application of Computational Chemistry - Eigenbasis.md","x":1920,"y":-1308,"width":840,"height":820},
+		{"id":"28732cfcfc7325ec","type":"file","file":"Methods for the Electronic Hamiltonian.md","x":-599,"y":-2238,"width":820,"height":900},
+		{"id":"503cbefa22cada83","type":"file","file":"Applications of Eigenproblems Computational Chemistry.md","x":440,"y":-2028,"width":960,"height":480},
+		{"id":"13c7a2ec23b55a4d","type":"file","file":"Hamiltonian.md","x":-2880,"y":-1928,"width":688,"height":280},
+		{"id":"9684a51b07a5051b","type":"file","file":"Solving Eigenstates.md","x":-2780,"y":-1563,"width":520,"height":510},
+		{"id":"a50c92e62d6e4777","type":"file","file":"Chemistry Basis Set.md","x":-1800,"y":-1308,"width":923,"height":740},
+		{"id":"a0b9d01853144473","type":"file","file":"Minimal Basis Sets.md","x":-519,"y":-1068,"width":659,"height":340},
+		{"id":"17d2a02e0c720b2c","type":"file","file":"Application of Computational Chemistry - Eigenvalues.md","x":1940,"y":-3028,"width":820,"height":680},
+		{"id":"16ec7d5baa1b9a49","type":"file","file":"Ground State Problem.md","x":5220,"y":-2368,"width":517,"height":280},
+		{"id":"f3907f726fad4e46","type":"file","file":"Fermion-to-Qubit Mappings.md","x":5005,"y":-2980,"width":948,"height":400},
+		{"id":"b7058709f713581a","type":"file","file":"Time Evolution Problem.md","x":5221,"y":-1440,"width":517,"height":248},
+		{"id":"25700cf6908e144b","type":"file","file":"Thermal Average.md","x":5221,"y":-1120,"width":517,"height":255},
+		{"id":"306b9196d5c7e372","x":6160,"y":-5180,"width":1400,"height":1720,"type":"file","file":"Example through LiH.md"},
+		{"id":"7216579fd61aa44f","type":"file","file":"Quantum Chemistry Challenges.md","x":4000,"y":-2396,"width":520,"height":336},
+		{"id":"02bb45ea00039966","x":3960,"y":-4160,"width":760,"height":640,"type":"text","text":"Dihydrogen Monoxide ($H_2O$)The Setup: 10 electrons. \n\nUsing the 6-31G(d) basis set from our previous context, we have $N = 26$ spin-orbitals.\n\nQubits Required: 26 Qubits.\n\n# Jordan-Wigner: \nTo simulate an electron jumping from the lowest energy core orbital to the highest virtual orbital (orbital 26), JW must apply a string of $Z$-gates across all 25 preceding qubits.\n\nPauli weight = $\\approx 26$. \n\nIn a real quantum algorithm like VQE (Variational Quantum Eigensolver), this creates thousands of sequential CNOT gates. On near-term (NISQ) quantum computers, the hardware noise will destroy the calculation before it finishes.\n\n# Bravyi-Kitaev: \n\nBecause of the binary tree structure, checking the parity of 25 preceding orbitals only requires checking the \"nodes\" that sum up those blocks.\n\nMax Pauli weight = $\\approx \\log_2(26) \\approx \\mathbf{5}$.The Verdict: At $N=26$, BK completely dominates. By squashing a 26-gate operation down to a 5-gate operation, BK drastically reduces the circuit depth, making the exact simulation of water's electronic structure far more feasible on noisy quantum hardware."},
+		{"id":"95cf4b50dfb4c4ac","type":"file","file":"Electronic Structure Problem.md","x":-1800,"y":-2148,"width":923,"height":720},
+		{"id":"dda67d5e8bd8011e","type":"file","file":"Application of Computational Chemistry - Eigenstates.md","x":1920,"y":-2220,"width":820,"height":851},
+		{"id":"4c5a71419fc81684","type":"file","file":"Solving for Singular Hydrogen.md","x":4880,"y":-5180,"width":1220,"height":1720},
+		{"id":"23033b6bb71db598","x":3960,"y":-4340,"width":760,"height":100,"type":"text","text":"Comparing this to the single-atom case:1 Hydrogen atom ($N=10, E=1$): $\\binom{10}{1} = 10$ configurations.1 Hydrogen molecule ($N=10, E=2$): $\\binom{10}{2} = 45$ configurations."}
+	],
+	"edges":[
+		{"id":"ee3f50db73cd500a","fromNode":"7216579fd61aa44f","fromSide":"right","toNode":"16ec7d5baa1b9a49","toSide":"left","label":"Solving through \nQuantum Algorithms is characterized"},
+		{"id":"81dd8458211f27a8","fromNode":"95cf4b50dfb4c4ac","fromSide":"right","toNode":"28732cfcfc7325ec","toSide":"left","label":"is solved by"},
+		{"id":"60a5e98ac2fb3c8d","fromNode":"a50c92e62d6e4777","fromSide":"right","toNode":"28732cfcfc7325ec","toSide":"left","label":"is used to solve"},
+		{"id":"bd51fbc58e44d502","fromNode":"13c7a2ec23b55a4d","fromSide":"right","toNode":"95cf4b50dfb4c4ac","toSide":"left","label":"is the core nature of \nthe problem of"},
+		{"id":"f628181cffbc6169","fromNode":"28732cfcfc7325ec","fromSide":"bottom","toNode":"a0b9d01853144473","toSide":"top","label":"at minimum, any problem\nuses a subset of"},
+		{"id":"a5181c7081a40439","fromNode":"9684a51b07a5051b","fromSide":"right","toNode":"95cf4b50dfb4c4ac","toSide":"left","label":"is the main \nmethod to solve"},
+		{"id":"b5b6647beb5a3fd1","fromNode":"537c63440818939a","fromSide":"right","toNode":"7216579fd61aa44f","toSide":"left"},
+		{"id":"9a45fbc2264c3841","fromNode":"28732cfcfc7325ec","fromSide":"top","toNode":"01066344b3b34b81","toSide":"bottom","label":"is mapped to"},
+		{"id":"af0d4f13575944f6","fromNode":"28732cfcfc7325ec","fromSide":"right","toNode":"503cbefa22cada83","toSide":"left","label":"can be used for"},
+		{"id":"32502a649fb4b02f","fromNode":"503cbefa22cada83","fromSide":"right","toNode":"17d2a02e0c720b2c","toSide":"left","label":"in how a reaction\nwill result"},
+		{"id":"ada22a91caf9e7f9","fromNode":"503cbefa22cada83","fromSide":"right","toNode":"dda67d5e8bd8011e","toSide":"left","label":"in what is the geometry \nof the molecule"},
+		{"id":"41865db6504fc5c9","fromNode":"503cbefa22cada83","fromSide":"right","toNode":"c67263a4e896daf9","toSide":"left","label":"in how reactive and stable it is"},
+		{"id":"0163eacb42641dd0","fromNode":"16ec7d5baa1b9a49","fromSide":"top","toNode":"f3907f726fad4e46","toSide":"bottom","label":"the Hamiltonian is derived from"},
+		{"id":"0de03267745e742f","fromNode":"f3907f726fad4e46","fromSide":"top","toNode":"4c5a71419fc81684","toSide":"bottom","label":"Example of Bit and \nQubit Scale"},
+		{"id":"d39f34f0492d6afa","fromNode":"f3907f726fad4e46","fromSide":"top","toNode":"306b9196d5c7e372","toSide":"bottom","label":"Example of \nEncoding and Solving"},
+		{"id":"26ca6979665d7680","fromNode":"4c5a71419fc81684","fromSide":"left","toNode":"23033b6bb71db598","toSide":"right"}
+	]
+}
