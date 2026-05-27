@@ -1,17 +1,536 @@
 ---
+import Layout from '../components/shared/Layout.astro';
+import { getCollection } from 'astro:content';
 
+const gardenEntries = await getCollection('garden').catch(() => []);
+const playgroundEntries = await getCollection('playground').catch(() => []);
+
+// Group garden entries by folder
+const byFolder: Record<string, typeof gardenEntries> = {};
+for (const entry of gardenEntries) {
+  const parts = entry.id.split('/');
+  const folder = parts.length > 1 ? parts[0] : 'root';
+  if (!byFolder[folder]) byFolder[folder] = [];
+  byFolder[folder].push(entry);
+}
+
+const folderIcons: Record<string, string> = {
+  quantum:   '⚛️',
+  ml:        '🧠',
+  automata:  '🤖',
+  'quant-fi':'📈',
+  root:      '📝',
+};
+
+const recentNotes = [...gardenEntries]
+  .sort((a, b) => {
+    const da = a.data.created ? new Date(a.data.created).getTime() : 0;
+    const db = b.data.created ? new Date(b.data.created).getTime() : 0;
+    return db - da;
+  })
+  .slice(0, 5);
+
+function entrySlug(entry: (typeof gardenEntries)[0]) {
+  return entry.id
+    .split('/').pop()!
+    .replace(/\.md$/i, '')
+    .toLowerCase()
+    .replace(/\s+/g, '-');
+}
+
+const allTags = [...new Set(gardenEntries.flatMap(e => e.data.tags ?? []))];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="PaperWallGarden" section="home">
+  <!-- Hero -->
+  <section class="home-hero">
+    <div class="home-hero__inner">
+      <div class="home-hero__badge">v0.1 · Phase 1 &amp; 2</div>
+      <h1 class="home-hero__title">
+        <span class="home-hero__title-main">PaperWall</span><br/>
+        <span class="home-hero__title-accent">Garden</span>
+      </h1>
+      <p class="home-hero__desc">
+        A deeply technical knowledge base spanning quantum mechanics,
+        machine learning, automata theory, and quantitative finance —
+        rendered as a living digital garden with interactive experiments.
+      </p>
+      <div class="home-hero__ctas">
+        <a href="/garden" class="home-cta home-cta--primary">
+          <span>🌿</span> Explore the Garden
+        </a>
+        <a href="/playground" class="home-cta home-cta--secondary">
+          <span>⚗️</span> Open Playground
+        </a>
+      </div>
+    </div>
+    <div class="home-hero__stats" aria-label="Site statistics">
+      <div class="home-stat">
+        <span class="home-stat__n">{gardenEntries.length}</span>
+        <span class="home-stat__l">notes</span>
+      </div>
+      <div class="home-stat__divider" aria-hidden="true">·</div>
+      <div class="home-stat">
+        <span class="home-stat__n">{playgroundEntries.length}</span>
+        <span class="home-stat__l">experiments</span>
+      </div>
+      <div class="home-stat__divider" aria-hidden="true">·</div>
+      <div class="home-stat">
+        <span class="home-stat__n">{allTags.length}</span>
+        <span class="home-stat__l">topics</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column body -->
+  <section class="home-body">
+
+    <!-- Left: Digital Garden preview -->
+    <div class="home-panel">
+      <div class="home-panel__header">
+        <span class="home-panel__icon">🌿</span>
+        <h2 class="home-panel__title">Digital Garden</h2>
+        <a href="/garden" class="home-panel__link">All notes →</a>
+      </div>
+
+      <!-- Topic folders -->
+      {Object.entries(byFolder).map(([folder, entries]) => (
+        <div class="home-folder">
+          <div class="home-folder__label">
+            <span>{folderIcons[folder] ?? '📁'}</span>
+            {folder}
+            <span class="home-folder__count">{entries.length}</span>
+          </div>
+          <div class="home-folder__notes">
+            {entries.slice(0, 4).map(entry => (
+              <a href={`/garden/${entrySlug(entry)}`} class="home-note-card">
+                <span class="home-note-card__title">
+                  {entry.data.title ?? entrySlug(entry)}
+                </span>
+                {(entry.data.tags ?? []).slice(0,2).map((t: string) => (
+                  <span class="home-note-card__tag">#{t}</span>
+                ))}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <!-- Tags cloud -->
+      {allTags.length > 0 && (
+        <div class="home-tags">
+          <div class="home-tags__label">TOPICS</div>
+          <div class="home-tags__list">
+            {allTags.map(tag => (
+              <span class="home-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Right: Playground + recent -->
+    <div class="home-panel">
+      <div class="home-panel__header">
+        <span class="home-panel__icon">⚗️</span>
+        <h2 class="home-panel__title">Playground</h2>
+        <a href="/playground" class="home-panel__link">All experiments →</a>
+      </div>
+
+      {playgroundEntries.length > 0 ? (
+        <div class="home-experiments">
+          {playgroundEntries.map(exp => (
+            <a href={`/playground/${exp.id.replace(/\.mdx$/,'')}`} class="home-experiment-card">
+              <div class="home-experiment-card__title">{exp.data.title}</div>
+              <div class="home-experiment-card__desc">{exp.data.description}</div>
+              <div class="home-experiment-card__tags">
+                {exp.data.tags.slice(0,3).map((t: string) => (
+                  <span class="home-note-card__tag">#{t}</span>
+                ))}
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="home-empty">
+          <span class="home-empty__icon">⚗️</span>
+          <p>Experiments coming soon.</p>
+          <p class="home-empty__sub">Drop <code>.mdx</code> files in <code>src/content/playground/</code></p>
+        </div>
+      )}
+
+      <!-- Recently added -->
+      {recentNotes.length > 0 && (
+        <div style="margin-top: 28px;">
+          <div class="home-panel__subheader">RECENTLY ADDED</div>
+          <div class="home-recent">
+            {recentNotes.map(n => (
+              <a href={`/garden/${entrySlug(n)}`} class="home-recent-item">
+                <span class="home-recent-item__dot" aria-hidden="true"></span>
+                <span class="home-recent-item__title">{n.data.title ?? entrySlug(n)}</span>
+                {n.data.created && (
+                  <span class="home-recent-item__date">
+                    {new Date(n.data.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+  </section>
+</Layout>
+
+<style>
+/* ── Hero ──────────────────────────────────────────────────── */
+.home-hero {
+  position: relative;
+  padding: 72px 56px 52px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* faint radial accent */
+.home-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.home-hero__inner { position: relative; max-width: 640px; }
+
+.home-hero__badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-bottom: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.home-hero__title {
+  font-family: var(--font-mono);
+  line-height: 1.0;
+  margin-bottom: 20px;
+  letter-spacing: -0.04em;
+}
+.home-hero__title-main {
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 300;
+  color: var(--text);
+}
+.home-hero__title-accent {
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.home-hero__desc {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--text-2);
+  line-height: 1.75;
+  max-width: 540px;
+  margin-bottom: 28px;
+}
+
+.home-hero__ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--r-lg);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 180ms ease;
+}
+.home-cta--primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: 1.5px solid var(--accent);
+}
+.home-cta--primary:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  transform: translateY(-1px);
+}
+.home-cta--secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border-2);
+}
+.home-cta--secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.home-hero__stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.home-stat { display: flex; align-items: baseline; gap: 6px; }
+.home-stat__n {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+.home-stat__l {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+}
+.home-stat__divider { color: var(--border-2); font-size: 1.2rem; }
+
+/* ── Body grid ─────────────────────────────────────────────── */
+.home-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: calc(100vh - 52px - 300px);
+}
+
+@media (max-width: 900px) {
+  .home-body { grid-template-columns: 1fr; }
+}
+
+.home-panel {
+  padding: 40px 48px;
+  border-right: 1px solid var(--border);
+}
+.home-panel:last-child { border-right: none; }
+
+.home-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.home-panel__icon { font-size: 1.1rem; }
+.home-panel__title {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  flex: 1;
+}
+.home-panel__link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 120ms ease;
+}
+.home-panel__link:hover { opacity: 1; }
+.home-panel__subheader {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+
+/* ── Folders ───────────────────────────────────────────────── */
+.home-folder { margin-bottom: 24px; }
+.home-folder__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.home-folder__count {
+  margin-left: auto;
+  background: var(--bg-2);
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-size: 0.65rem;
+  color: var(--text-3);
+}
+.home-folder__notes {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* ── Note cards ────────────────────────────────────────────── */
+.home-note-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--r-md);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 120ms ease;
+}
+.home-note-card:hover {
+  background: var(--bg-2);
+  border-color: var(--border);
+}
+.home-note-card__title {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--text);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.home-note-card__tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  flex-shrink: 0;
+}
+
+/* ── Tags ──────────────────────────────────────────────────── */
+.home-tags { margin-top: 24px; }
+.home-tags__label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.home-tags__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.home-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: var(--bg-2);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  cursor: default;
+}
+
+/* ── Experiments ───────────────────────────────────────────── */
+.home-experiments { display: flex; flex-direction: column; gap: 8px; }
+
+.home-experiment-card {
+  display: block;
+  padding: 14px 16px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 150ms ease;
+  background: var(--bg);
+}
+.home-experiment-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  transform: translateX(2px);
+}
+.home-experiment-card__title {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.home-experiment-card__desc {
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.home-experiment-card__tags { display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* ── Empty state ───────────────────────────────────────────── */
+.home-empty {
+  padding: 32px 20px;
+  text-align: center;
+  border: 1px dashed var(--border-2);
+  border-radius: var(--r-xl);
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.8;
+}
+.home-empty__icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.home-empty__sub { font-size: 0.72rem; opacity: 0.7; }
+.home-empty code {
+  background: var(--bg-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+/* ── Recent ────────────────────────────────────────────────── */
+.home-recent { display: flex; flex-direction: column; gap: 2px; }
+.home-recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--r-md);
+  text-decoration: none;
+  transition: background 120ms ease;
+}
+.home-recent-item:hover { background: var(--bg-2); }
+.home-recent-item__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.home-recent-item__title {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--text);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.home-recent-item__date {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+</style>

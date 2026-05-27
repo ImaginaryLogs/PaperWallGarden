@@ -1,0 +1,77 @@
+---
+import Layout from '../../components/shared/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('garden').catch(() => []);
+
+// Group by folder
+const byFolder: Record<string, typeof entries> = {};
+for (const e of entries) {
+  const parts = e.id.split('/');
+  const folder = parts.length > 1 ? parts[0] : 'root';
+  if (!byFolder[folder]) byFolder[folder] = [];
+  byFolder[folder].push(e);
+}
+
+const folderIcons: Record<string, string> = {
+  quantum: '⚛️', ml: '🧠', automata: '🤖', 'quant-fi': '📈', root: '📝',
+};
+
+function entrySlug(e: typeof entries[0]) {
+  return e.id.split('/').pop()!.replace(/\.md$/i, '').toLowerCase().replace(/\s+/g, '-');
+}
+
+const allTags = [...new Set(entries.flatMap(e => e.data.tags ?? []))];
+---
+
+<Layout title="Digital Garden" section="garden" tags={allTags}>
+  <div class="garden-index">
+    <header class="garden-note__header">
+      <h1 class="garden-note__title">Digital Garden</h1>
+      <div class="garden-note__meta">
+        <span>{entries.length} notes</span>
+        <span>·</span>
+        <span>{Object.keys(byFolder).length} folders</span>
+        <div class="garden-note__tags">
+          {allTags.slice(0, 6).map(t => (
+            <span class="garden-note__tag">{t}</span>
+          ))}
+        </div>
+      </div>
+    </header>
+
+    {Object.entries(byFolder).map(([folder, folderEntries]) => (
+      <div class="garden-index__group">
+        <div class="garden-index__folder">
+          {folderIcons[folder] ?? '📁'} {folder}
+        </div>
+        <ul class="garden-index__list">
+          {folderEntries.map(entry => (
+            <li>
+              <a href={`/garden/${entrySlug(entry)}`} class="garden-index__item">
+                <span class="garden-index__item-title">
+                  {entry.data.title ?? entrySlug(entry)}
+                </span>
+                <div class="garden-index__item-tags">
+                  {(entry.data.tags ?? []).slice(0, 3).map((t: string) => (
+                    <span class="garden-index__item-tag">#{t}</span>
+                  ))}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+
+    {entries.length === 0 && (
+      <div style="padding: 60px 20px; text-align: center; color: var(--text-3); font-family: var(--font-mono);">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🌱</div>
+        <p>No notes yet.</p>
+        <p style="font-size: 0.8rem; margin-top: 8px; opacity: 0.6;">
+          Add Markdown files to <code>obsidian/</code>
+        </p>
+      </div>
+    )}
+  </div>
+</Layout>

@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../components/shared/Layout.astro';
+
+export async function getStaticPaths() {
+  const playgroundEntries = await getCollection('playground');
+  return playgroundEntries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={`${entry.data.title} | Interactive Lab`} description={entry.data.description}>
+  <div class="playground-wrapper">
+    <header class="lab-header">
+      <a href="/" class="back-link">← Return to Dashboard</a>
+      <h1>{entry.data.title}</h1>
+      <p class="subtitle">{entry.data.description}</p>
+    </header>
+    
+    <div class="lab-content">
+      <Content />
+    </div>
+  </div>
+</Layout>

@@ -1,26 +1,26 @@
 ---
-import '../../../src/styles/global.css';
-import '../../../src/styles/garden.css';
-import '../../../src/styles/playground.css';
+import '../../styles/global.css';
+import '../../styles/garden.css';
+import '../../styles/playground.css';
 
 interface Props {
   title?: string;
   description?: string;
   section?: 'garden' | 'playground' | 'home';
-  backlinks?: Array<{ slug: string; title: string }>;
   tags?: string[];
+  backlinks?: Array<{ slug: string; title: string }>;
 }
 
 const {
-  title = 'PaperWallGarden',
+  title       = 'PaperWallGarden',
   description = 'A digital garden and interactive developer playground.',
-  section = 'home',
-  backlinks = [],
-  tags = [],
+  section     = 'home',
+  tags        = [],
+  backlinks   = [],
 } = Astro.props;
 
-const siteBase = import.meta.env.BASE_URL || '/';
-const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL ?? '/';
+
 ---
 
 <!doctype html>
@@ -29,129 +29,82 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <title>{title} — PaperWallGarden</title>
-
-    <!-- Fonts: Departure Mono + IBM Plex Serif -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- KaTeX for math rendering -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-    />
-
-    <!-- React Flow styles -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@xyflow/react@12/dist/style.css"
-    />
+    <title>{title === 'PaperWallGarden' ? title : `${title} — PaperWallGarden`}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+    <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" 
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" 
+    crossorigin="anonymous"
+  >
   </head>
-
   <body>
-    <!-- Ambient grid background -->
     <div class="site-grid-bg" aria-hidden="true"></div>
 
-    <!-- Top navigation bar -->
     <nav class="site-nav" role="navigation" aria-label="Main navigation">
-      <a href={siteBase} class="site-nav__logo" aria-label="Home">
+      <a href={base} class="site-nav__logo" aria-label="Home">
         <span class="site-nav__logo-mark">⬡</span>
         <span class="site-nav__logo-text">PaperWallGarden</span>
       </a>
-
       <div class="site-nav__links">
         <a
-          href={`${siteBase}garden`}
+          href={`${base}garden`}
           class:list={['site-nav__link', { 'site-nav__link--active': section === 'garden' }]}
-          aria-current={section === 'garden' ? 'section' : undefined}
         >
-          <span class="site-nav__link-icon">🌿</span>
-          Digital Garden
+          <span class="site-nav__link-icon">🌿</span>Digital Garden
         </a>
         <a
-          href={`${siteBase}playground`}
+          href={`${base}playground`}
           class:list={['site-nav__link', { 'site-nav__link--active': section === 'playground' }]}
-          aria-current={section === 'playground' ? 'section' : undefined}
         >
-          <span class="site-nav__link-icon">⚗️</span>
-          Playground
+          <span class="site-nav__link-icon">⚗️</span>Playground
         </a>
       </div>
-
       <div class="site-nav__actions">
-        <button
-          id="theme-toggle"
-          class="site-nav__icon-btn"
-          aria-label="Toggle theme"
-          title="Toggle light/dark theme"
-        >
+        <button id="theme-toggle" class="site-nav__icon-btn" aria-label="Toggle theme">
           <span class="theme-icon theme-icon--dark">◑</span>
           <span class="theme-icon theme-icon--light">◐</span>
         </button>
-
-        <a
-          href="https://github.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="site-nav__icon-btn"
-          aria-label="View on GitHub"
-        >
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="site-nav__icon-btn" aria-label="GitHub">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
           </svg>
         </a>
       </div>
     </nav>
 
-    <!-- Main layout wrapper -->
     <div class="site-layout" data-section={section}>
-
-      <!-- Sidebar (shown on garden/playground pages) -->
       {section !== 'home' && (
         <aside class="site-sidebar" aria-label="Sidebar navigation">
           <div class="sidebar-section">
             <span class="sidebar-label">SECTION</span>
             {section === 'garden' ? (
               <div class="sidebar-section-links">
-                <a href={`${siteBase}garden`} class="sidebar-link">
-                  <span>🗺️</span> All Notes
-                </a>
-                <a href={`${siteBase}garden/graph`} class="sidebar-link">
-                  <span>🕸️</span> Graph View
-                </a>
+                <a href={`${base}garden`} class="sidebar-link"><span>🗺️</span> All Notes</a>
+                <a href={`${base}garden/graph`} class="sidebar-link"><span>🕸️</span> Graph View</a>
               </div>
             ) : (
               <div class="sidebar-section-links">
-                <a href={`${siteBase}playground`} class="sidebar-link">
-                  <span>🧪</span> All Experiments
-                </a>
+                <a href={`${base}playground`} class="sidebar-link"><span>🧪</span> All Experiments</a>
               </div>
             )}
           </div>
-
           {tags.length > 0 && (
             <div class="sidebar-section">
               <span class="sidebar-label">TAGS</span>
               <div class="sidebar-tags">
-                {tags.map((tag) => (
-                  <a href={`${siteBase}tags/${tag}`} class="sidebar-tag">
-                    #{tag}
-                  </a>
+                {tags.map(tag => (
+                  <span class="sidebar-tag">#{tag}</span>
                 ))}
               </div>
             </div>
           )}
-
           {backlinks.length > 0 && (
             <div class="sidebar-section">
               <span class="sidebar-label">BACKLINKS</span>
               <div class="sidebar-backlinks">
-                {backlinks.map((bl) => (
-                  <a href={`${siteBase}garden/${bl.slug}`} class="sidebar-backlink">
+                {backlinks.map(bl => (
+                  <a href={`${base}garden/${bl.slug}`} class="sidebar-backlink">
                     <span class="sidebar-backlink__arrow">←</span>
                     {bl.title}
                   </a>
@@ -161,38 +114,29 @@ const currentPath = Astro.url.pathname;
           )}
         </aside>
       )}
-
-      <!-- Main content area -->
       <main class="site-main" id="main-content">
         <slot />
       </main>
-
     </div>
 
-    <!-- Footer -->
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <span class="site-footer__copy">
-          PaperWallGarden — built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>
-        </span>
+        <span class="site-footer__copy">PaperWallGarden — <a href="https://astro.build" target="_blank" rel="noopener">Astro</a></span>
         <div class="site-footer__links">
-          <a href={`${siteBase}garden`}>Garden</a>
+          <a href={`${base}garden`}>Garden</a>
           <span aria-hidden="true">·</span>
-          <a href={`${siteBase}playground`}>Playground</a>
+          <a href={`${base}playground`}>Playground</a>
         </div>
       </div>
     </footer>
 
     <script>
-      // Theme toggle
       const html = document.documentElement;
-      const btn = document.getElementById('theme-toggle');
+      const btn  = document.getElementById('theme-toggle');
       const stored = localStorage.getItem('pwg-theme');
       if (stored) html.setAttribute('data-theme', stored);
-
       btn?.addEventListener('click', () => {
-        const current = html.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-theme', next);
         localStorage.setItem('pwg-theme', next);
       });

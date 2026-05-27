@@ -1,0 +1,193 @@
+---
+import Layout from '../../components/shared/Layout.astro';
+import ObsidianCanvas from '../../components/garden/ObsidianCanvas';
+import { getCollection, render } from 'astro:content';
+import { buildBacklinkIndex, wikilinkToSlug } from '../../lib/obsidian/resolveWikilinks';
+import { readFile } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
+import { glob } from 'node:fs/promises';
+
+// ── Static path generation ──────────────────────────────────
+export async function getStaticPaths() {
+  const gardenEntries = await getCollection('garden').catch(() => []);
+
+  // Also find .canvas files in the vault
+  const vaultRoot = resolve('./obsidian');
+  const canvasFiles: Array<{ slug: string; filePath: string; folder: string; name: string }> = [];
+
+  try {
+    // Use glob to find canvas files
+    const { glob: globFn } = await import('glob');
+    const files = await globFn('**/*.canvas', { cwd: vaultRoot });
+    for (const f of files) {
+      const parts  = f.replace(/\.canvas$/, '').split('/');
+      const name   = parts.pop()!;
+      const slug   = name.toLowerCase().replace(/\s+/g, '-');
+      canvasFiles.push({ slug, filePath: join(vaultRoot, f), folder: parts.join('/'), name });
+    }
+  } catch {
+    // glob package might not be installed — try manual scan
+    try {
+      for await (const entry of (await import('node:fs/promises')).glob?.('**/*.canvas', { cwd: vaultRoot }) ?? []) {
+        const clean = (entry as string).replace(/\.canvas$/, '');
+        const parts = clean.split('/');
+        const name  = parts.pop()!;
+        const slug  = name.toLowerCase().replace(/\s+/g, '-');
+        canvasFiles.push({ slug, filePath: join(vaultRoot, entry as string), folder: parts.join('/'), name });
+      }
+    } catch {
+      // Node 20 glob support — fallback to fs.readdir recursive
+      const walkDir = async (dir: string, base: string): Promise<string[]> => {
+        const { readdir, stat } = await import('node:fs/promises');
+        const items = await readdir(dir);
+        const results: string[] = [];
+        for (const item of items) {
+          const full = join(dir, item);
+          const s    = await stat(full);
+          if (s.isDirectory()) results.push(...await walkDir(full, base));
+          else if (item.endsWith('.canvas')) results.push(full.replace(base + '/', ''));
+        }
+        return results;
+      };
+      const found = await walkDir(vaultRoot, vaultRoot).catch(() => []);
+      for (const f of found) {
+        const clean = f.replace(/\.canvas$/, '');
+        const parts = clean.split('/');
+        const name  = parts.pop()!;
+        const slug  = name.toLowerCase().replace(/\s+/g, '-');
+        canvasFiles.push({ slug, filePath: join(vaultRoot, f), folder: parts.join('/'), name });
+      }
+    }
+  }
+
+  const mdPaths = gardenEntries.map(entry => {
+    const slug = entry.id
+      .split('/').pop()!
+      .replace(/\.md$/i, '')
+      .toLowerCase()
+      .replace(/\s+/g, '-');
+    return { params: { slug }, props: { entry, canvasFile: null } };
+  });
+
+  const canvasPaths = canvasFiles.map(cf => ({
+    params: { slug: cf.slug },
+    props:  { entry: null, canvasFile: cf },
+  }));
+
+  return [...mdPaths, ...canvasPaths];
+}
+
+// ── Page props ──────────────────────────────────────────────
+const { entry, canvasFile } = Astro.props;
+
+// ── Build backlink index ────────────────────────────────────
+const allEntries = await getCollection('garden').catch(() => []);
+const backlinkIndex = buildBacklinkIndex(
+  allEntries.map(e => ({
+    slug:    e.id.split('/').pop()!.replace(/\.md$/i, '').toLowerCase().replace(/\s+/g, '-'),
+    content: e.body ?? '',
+  }))
+);
+
+// ── Canvas branch ───────────────────────────────────────────
+let canvasJson: any = null;
+if (canvasFile) {
+  const raw = await readFile(canvasFile.filePath, 'utf-8');
+  canvasJson = JSON.parse(raw);
+}
+
+// ── Markdown branch ─────────────────────────────────────────
+let rendered: { Content: any; headings: any[] } | null = null;
+if (entry) {
+  // Add this before the if(entry) block
+  console.log("DEBUG ENTRY TYPE:", typeof entry, Object.keys(entry || {}));
+  rendered = await render(entry);
+ 
+}
+
+const currentSlug = canvasFile?.slug ?? (
+  entry?.id.split('/').pop()!.replace(/\.md$/i, '').toLowerCase().replace(/\s+/g, '-')
+);
+
+const backlinks = (backlinkIndex.get(currentSlug!) ?? []).map(slug => {
+  const e = allEntries.find(e =>
+    e.id.split('/').pop()!.replace(/\.md$/i, '').toLowerCase().replace(/\s+/g, '-') === slug
+  );
+  return { slug, title: e?.data.title ?? slug };
+});
+
+const title       = entry?.data.title ?? canvasFile?.name ?? currentSlug;
+const tags: string[] = entry?.data.tags ?? [];
+const created     = entry?.data.created;
+---
+
+{canvasFile ? (
+  <!-- Canvas page: full-height interactive viewer -->
+  <Layout title={title!} section="garden" tags={tags} backlinks={backlinks}>
+    <div class="canvas-page">
+      <div class="canvas-page__header">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+          <span style="font-size:0.7rem; font-family:var(--font-mono); color:var(--text-3); letter-spacing:0.1em;">
+            CANVAS · {canvasFile.folder || 'root'}
+          </span>
+        </div>
+        <h1 class="canvas-page__title">{canvasFile.name}</h1>
+      </div>
+      <div class="canvas-page__viewer">
+        <ObsidianCanvas canvasJson={canvasJson} client:only="react" />
+      </div>
+    </div>
+  </Layout>
+) : entry && rendered ? (
+  <!-- Markdown note page -->
+  <Layout title={title!} section="garden" tags={tags} backlinks={backlinks}>
+    <article class="garden-note">
+      <header class="garden-note__header">
+        <h1 class="garden-note__title">{title}</h1>
+        <div class="garden-note__meta">
+          {created && (
+            <span class="garden-note__date">
+              {new Date(created).toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric'
+              })}
+            </span>
+          )}
+          {tags.length > 0 && (
+            <div class="garden-note__tags">
+              {tags.map(t => (
+                <span class="garden-note__tag">{t}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
+
+      <div class="garden-prose">
+        <rendered.Content />
+      </div>
+
+      {backlinks.length > 0 && (
+        <footer style="margin-top:48px; padding-top:24px; border-top:1px solid var(--border);">
+          <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.12em; color:var(--text-3); text-transform:uppercase; margin-bottom:12px;">
+            ← Linked from
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            {backlinks.map(bl => (
+              <a href={`/garden/${bl.slug}`} class="sidebar-backlink">
+                <span class="sidebar-backlink__arrow">←</span>
+                {bl.title}
+              </a>
+            ))}
+          </div>
+        </footer>
+      )}
+    </article>
+  </Layout>
+) : (
+  <Layout title="Not Found" section="garden">
+    <div style="padding:60px 20px; text-align:center; color:var(--text-3); font-family:var(--font-mono);">
+      <div style="font-size:3rem;margin-bottom:16px;">🍂</div>
+      <p>Note not found.</p>
+    </div>
+  </Layout>
+)}
