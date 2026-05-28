@@ -54,7 +54,11 @@ jobs:
 
       - name: Step 2.5 - Copy WASM assets to Quartz static folder
         run: |
+          # 1. Create the destination folder inside your source 'static' directory
           mkdir -p static/wasm
+          
+          # 2. Copy the built WASM files into the source 'static' directory
+          # Do NOT use 'public/' here.
           cp wasm-modules/quantum-sim/pkg/quantum_sim_bg.wasm static/wasm/
           cp wasm-modules/quantum-sim/pkg/quantum_sim.js static/wasm/
 
