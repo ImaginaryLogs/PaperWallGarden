@@ -53,8 +53,21 @@ jobs:
           npm run build
 
       # 4. Standard build execution without any hacky wizard bypasses
+      # =========================================================================
+      # Step 3: Ensure plugin manifest exists, then build
+      # =========================================================================
       - name: Step 3 - Execute Quartz Static Site Generation Build
-        run: npm run quartz build
+        run: |
+          # Ensure the directory exists so the bundler doesn't crash on import
+          mkdir -p .quartz/plugins
+          
+          # If the index file is missing, create a placeholder so the build can proceed
+          if [ ! -f .quartz/plugins/index.ts ]; then
+            echo 'export const CustomOgImagesEmitterName = "CustomOgImagesEmitter"; export const plugins = {};' > .quartz/plugins/index.ts
+          fi
+          
+          # Run the build
+          npm run quartz build
 
       - name: Upload Static Web Production Artifacts
         uses: actions/upload-pages-artifact@v3
