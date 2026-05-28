@@ -3,7 +3,7 @@ name: Deploy Quartz Site with WASM Playground
 on:
   push:
     branches:
-      - main  # Adjust this if your active development branch is quartz-refactor
+      - main 
 
 permissions:
   contents: read
@@ -30,39 +30,32 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      # =========================================================================
-      # CRITICAL STEP: Install Rust toolchain and wasm-pack for the runner environment
-      # =========================================================================
       - name: Install Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install wasm-pack
-        run: |
-          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      # =========================================================================
-      # THE 3-STEP PIPELINE (Executed automatically inside the cloud runner)
-      # =========================================================================
+      # 1. Install root dependencies (This now securely links your local plugin folder via the file: protocol)
       - name: Install Project Dependencies
         run: npm ci
 
+      # 2. Compile the Rust logic
       - name: Step 1 - Compile Rust WebAssembly Target
         run: |
           cd wasm-modules/quantum-sim
           wasm-pack build --target web
 
+      # 3. Build the plugin exactly like you did locally
       - name: Step 2 - Build the Local Quartz Plugin Bundle
         run: |
           cd quartz-plugin-wasm-playground
           npm run build
 
+      # 4. Standard build execution without any hacky wizard bypasses
       - name: Step 3 - Execute Quartz Static Site Generation Build
-        run: |
-          node ./quartz/bootstrap-cli.mjs sync
-          npm run quartz build
-      # =========================================================================
-      # Upload and Deploy the Static 'public/' Directory Assets
-      # =========================================================================
+        run: npm run quartz build
+
       - name: Upload Static Web Production Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
@@ -73,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }} # Fixed: Changed colons to dots
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
