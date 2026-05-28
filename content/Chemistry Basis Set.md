@@ -1,3 +1,9 @@
+---
+title: Quantum Chemistry Basis Sets
+tags:
+  - quantum-chemistry
+  - physics
+---
 In [[Quantum Chemistry]], a **basis set** is a collection of mathematical functions used to construct a molecule’s orbitals.
 
 Think of a basis set as a **box of digital legos** or a **palette of shapes** for algorithms to use to solve quantum chemistry problems.
