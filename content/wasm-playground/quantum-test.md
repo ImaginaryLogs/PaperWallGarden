@@ -55,8 +55,8 @@ This page is automatically intercepted by Quartz. The custom Preact component
 </div>
 
 <script type="module">
-  const basePath = window.location.pathname.startsWith('/paper-wall-garden') 
-  ? '/paper-wall-garden' 
+  const basePath = window.location.pathname.startsWith('/PaperWallGarden') 
+  ? '/PaperWallGarden' 
   : '';
 
   import init, { MultiQubitState } from `${basePath}/wasm/quantum_sim.js`;
