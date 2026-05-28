@@ -16,36 +16,43 @@ export const WasmModuleEmitter: QuartzEmitterPlugin<WasmEmitterOptions> = (opts)
   return {
     name: "WasmModuleEmitter",
 
-    // This method fulfills the runtime validation criteria: "emit" in instance
     async emit(ctx: BuildCtx, _content: ProcessedContent[], _resources): Promise<FilePath[]> {
       const emittedFiles: FilePath[] = []
-      
       const outputDir = join(ctx.argv.output, config.publicPrefix)
       await fs.mkdir(outputDir, { recursive: true })
 
-      let filesToEmit: string[] = []
+      let workspaceItems: string[] = []
       try {
-        filesToEmit = await fs.readdir(config.wasmModulesDir)
+        workspaceItems = await fs.readdir(config.wasmModulesDir)
       } catch (err) {
-        // If the workspace target dir isn't ready yet, skip gracefully
-        return []
+        return [] // Skips gracefully if directory isn't initialized yet
       }
 
-      for (const fileName of filesToEmit) {
-        if (fileName.endsWith(".wasm") || fileName.endsWith(".wat")) {
-          const sourceFilePath = join(config.wasmModulesDir, fileName)
-          const destinationPath = join(outputDir, fileName)
+      // Loop through each subfolder inside wasm-modules (e.g., "quantum-sim")
+      for (const item of workspaceItems) {
+        console.log("emitter.ts: ", item)
+        const pkgPath = join(config.wasmModulesDir, item, "pkg")
+        
+        try {
+          // Check if this project has a compiled 'pkg' folder
+          const pkgFiles = await fs.readdir(pkgPath)
 
-          try {
-            const binaryBuffer = await fs.readFile(sourceFilePath)
-            await fs.writeFile(destinationPath, binaryBuffer)
-            
-            // Nominal Type Branding: Cast string explicitly to branded FilePath format
-            const trackedPath = join(config.publicPrefix, fileName) as FilePath
-            emittedFiles.push(trackedPath)
-          } catch (error) {
-            console.error(`[WASM EMITTER ERROR] Failed to copy asset ${fileName}:`, error)
+          for (const fileName of pkgFiles) {
+            // Target the required production bundle files (.wasm and JS bindings)
+            if (fileName.endsWith(".wasm") || (fileName.endsWith(".js") && !fileName.endsWith("_bg.js"))) {
+              const sourceFilePath = join(pkgPath, fileName)
+              const destinationPath = join(outputDir, fileName)
+
+              const binaryBuffer = await fs.readFile(sourceFilePath)
+              await fs.writeFile(destinationPath, binaryBuffer)
+              
+              const trackedPath = join(config.publicPrefix, fileName) as FilePath
+              emittedFiles.push(trackedPath)
+            }
           }
+        } catch {
+          // If a subfolder doesn't have a /pkg folder, ignore it safely and continue
+          continue
         }
       }
 

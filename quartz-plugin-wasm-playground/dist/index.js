@@ -311,29 +311,33 @@ var WasmModuleEmitter = (opts) => {
   };
   return {
     name: "WasmModuleEmitter",
-    // This method fulfills the runtime validation criteria: "emit" in instance
     async emit(ctx, _content, _resources) {
       const emittedFiles = [];
       const outputDir = join2(ctx.argv.output, config.publicPrefix);
       await fs.mkdir(outputDir, { recursive: true });
-      let filesToEmit = [];
+      let workspaceItems = [];
       try {
-        filesToEmit = await fs.readdir(config.wasmModulesDir);
+        workspaceItems = await fs.readdir(config.wasmModulesDir);
       } catch (err) {
         return [];
       }
-      for (const fileName of filesToEmit) {
-        if (fileName.endsWith(".wasm") || fileName.endsWith(".wat")) {
-          const sourceFilePath = join2(config.wasmModulesDir, fileName);
-          const destinationPath = join2(outputDir, fileName);
-          try {
-            const binaryBuffer = await fs.readFile(sourceFilePath);
-            await fs.writeFile(destinationPath, binaryBuffer);
-            const trackedPath = join2(config.publicPrefix, fileName);
-            emittedFiles.push(trackedPath);
-          } catch (error) {
-            console.error(`[WASM EMITTER ERROR] Failed to copy asset ${fileName}:`, error);
+      for (const item of workspaceItems) {
+        console.log("emitter.ts: ", item);
+        const pkgPath = join2(config.wasmModulesDir, item, "pkg");
+        try {
+          const pkgFiles = await fs.readdir(pkgPath);
+          for (const fileName of pkgFiles) {
+            if (fileName.endsWith(".wasm") || fileName.endsWith(".js") && !fileName.endsWith("_bg.js")) {
+              const sourceFilePath = join2(pkgPath, fileName);
+              const destinationPath = join2(outputDir, fileName);
+              const binaryBuffer = await fs.readFile(sourceFilePath);
+              await fs.writeFile(destinationPath, binaryBuffer);
+              const trackedPath = join2(config.publicPrefix, fileName);
+              emittedFiles.push(trackedPath);
+            }
           }
+        } catch {
+          continue;
         }
       }
       return emittedFiles;
