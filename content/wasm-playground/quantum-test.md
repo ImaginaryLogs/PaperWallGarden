@@ -55,43 +55,46 @@ This page is automatically intercepted by Quartz. The custom Preact component
 </div>
 
 <script type="module">
-  const isGitHubPages = window.location.hostname.includes('github.io');
-    const basePath = isGitHubPages ? '/paper-wall-garden' : '';
-  // 2. Import using the dynamic base path
-  import init, { MultiQubitState } from `${basePath}/wasm/quantum_sim.js`;
+  const WASM_PATH = "/PaperWallGarden/wasm/quantum_sim.js";
+  const WASM_BG_PATH = "/PaperWallGarden/wasm/quantum_sim_bg.wasm";
+  console.log("Attempting to fetch:", WASM_PATH);
 
   async function run() {
-    await init(`${basePath}/wasm/quantum_sim_bg.wasm`);
-    let system = new MultiQubitState()
+    try {
+        await init(`${basePath}/wasm/quantum_sim_bg.wasm`);
+        let system = new MultiQubitState()
 
-    function updateUI() {
-      const probs = system.get_probabilities()
-      const states = ["00", "01", "10", "11"]
-      
-      states.forEach((state, idx) => {
-        const percentage = (probs[idx] * 100).toFixed(1)
-        document.getElementById(`bar-${state}`).style.width = `${percentage}%`
-        document.getElementById(`val-${state}`).innerText = `${percentage}%`
-      })
+        function updateUI() {
+        const probs = system.get_probabilities()
+        const states = ["00", "01", "10", "11"]
+        
+        states.forEach((state, idx) => {
+            const percentage = (probs[idx] * 100).toFixed(1)
+            document.getElementById(`bar-${state}`).style.width = `${percentage}%`
+            document.getElementById(`val-${state}`).innerText = `${percentage}%`
+        })
+        }
+
+        document.getElementById("btn-h0").addEventListener("click", () => {
+        system.hadamard_q0()
+        updateUI()
+        })
+
+        document.getElementById("btn-cnot").addEventListener("click", () => {
+        system.cnot()
+        updateUI()
+        })
+
+        document.getElementById("btn-clear").addEventListener("click", () => {
+        system.free()
+        system = new MultiQubitState()
+        updateUI()
+        })
+
+        updateUI()
+    } catch (e) {
+        console.error("WASM Load Failed. Check network path:", e);
     }
-
-    document.getElementById("btn-h0").addEventListener("click", () => {
-      system.hadamard_q0()
-      updateUI()
-    })
-
-    document.getElementById("btn-cnot").addEventListener("click", () => {
-      system.cnot()
-      updateUI()
-    })
-
-    document.getElementById("btn-clear").addEventListener("click", () => {
-      system.free()
-      system = new MultiQubitState()
-      updateUI()
-    })
-
-    updateUI()
   }
 
   run()

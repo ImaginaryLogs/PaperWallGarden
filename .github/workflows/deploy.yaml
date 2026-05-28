@@ -74,10 +74,16 @@ jobs:
           # Run the build
           npm run quartz build
 
+      - name: Diagnostic - List public directory
+        run: |
+          echo "Listing contents of public/wasm:"
+          ls -R public/wasm || echo "Folder public/wasm does not exist!"
+
       - name: Upload Static Web Production Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
+      
 
   deploy:
     needs: build
