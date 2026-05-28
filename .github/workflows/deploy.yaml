@@ -83,6 +83,7 @@ jobs:
           
           # Run the build
           npm run quartz build
+          rsync -av static/wasm/ public/wasm/
 
       - name: Diagnostic - List public directory
         run: |
