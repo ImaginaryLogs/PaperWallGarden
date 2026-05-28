@@ -7,7 +7,7 @@ configuration:
   analytics:
     provider: plausible
   locale: en-US
-  baseUrl: imaginarylogs.github.io/paper-wall-garden
+  baseUrl: imaginarylogs.github.io/PaperWallGarden
   ignorePatterns:
     - private
     - templates
