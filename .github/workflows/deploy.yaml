@@ -58,7 +58,7 @@ jobs:
 
       - name: Step 3 - Execute Quartz Static Site Generation Build
         run: |
-          npx quartz create --skip-links
+          npm run quartz create -- --strategy new --template default
           npm run quartz build
 
       # =========================================================================
