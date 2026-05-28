@@ -52,10 +52,12 @@ jobs:
           cd quartz-plugin-wasm-playground
           npm run build
 
-      # 4. Standard build execution without any hacky wizard bypasses
-      # =========================================================================
-      # Step 3: Ensure plugin manifest exists, then build
-      # =========================================================================
+      - name: Step 2.5 - Copy WASM assets to Quartz static folder
+        run: |
+          mkdir -p static/wasm
+          cp wasm-modules/quantum-sim/pkg/quantum_sim_bg.wasm public/static/wasm/
+          cp wasm-modules/quantum-sim/pkg/quantum_sim.js public/static/wasm/
+
       - name: Step 3 - Execute Quartz Static Site Generation Build
         run: |
           # Ensure the directory exists so the bundler doesn't crash on import
