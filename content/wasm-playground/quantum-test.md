@@ -57,20 +57,19 @@ This page is automatically intercepted by Quartz. The custom Preact component
 <script type="module">
   const WASM_JS = "/PaperWallGarden/wasm/quantum_sim.js";
   const WASM_BG = "/PaperWallGarden/wasm/quantum_sim_bg.wasm";
-  console.log("Attempting to fetch:", WASM_PATH);
 
   async function run() {
     try {
-        console.log("Loading module from:", WASM_JS);
-      
-        // 2. Use the dynamic import() function
+        console.log("Loading WASM module from:", WASM_JS);
+        
+        // 2. Dynamic import() returns a Promise that resolves to the module
         const module = await import(WASM_JS);
         
-        // 3. Extract the default export (init) and the class
+        // 3. Extract the default export (the init function) and your class
         const init = module.default;
         const { MultiQubitState } = module;
 
-        // 4. Initialize with the WASM binary path
+        // 4. Initialize the WASM binary
         await init(WASM_BG);
         
         // 5. Initialize your system
@@ -85,6 +84,7 @@ This page is automatically intercepted by Quartz. The custom Preact component
                 document.getElementById(`bar-${state}`).style.width = `${percentage}%`
                 document.getElementById(`val-${state}`).innerText = `${percentage}%`
             })
+            console.log("Probabilities: ", probs)
         }
 
         document.getElementById("btn-h0").addEventListener("click", () => {
