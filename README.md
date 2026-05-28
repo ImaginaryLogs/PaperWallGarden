@@ -121,8 +121,8 @@ Ensure your root quartz.config.yaml includes references to your local plugin bun
 You can instantiate and load your compiled algorithms within any standard markdown note by embedding an inline interactive environment:
 
 HTML
-## Live Multi-Qubit Superposition Sandbox
-
+## Example Live Multi-Qubit Superposition Sandbox
+```js
 <div class="sandbox" style="padding:1rem; background:#161618; border-radius:8px;">
   <div id="readout">Awaiting Initialization...</div>
   <button id="gate-trigger">Apply Operation</button>
@@ -147,7 +147,9 @@ HTML
 
   boot().catch(console.error)
 </script>
-🔍 Troubleshooting & Verification
+```
+
+# Troubleshooting & Verification
 ReferenceError: X is not defined: Your local plugin's distribution bundle (dist/) is out of sync with your Rust compilation footprints. Run the full 3-Step Compilation Pipeline to force cache busting across intermediate layers.
 
 Network 404 missing file blocks: Confirm your wasm-pack command specifies --target web. If it defaults to a bundler environment target, the browser will crash when parsing standard browser import statements.
