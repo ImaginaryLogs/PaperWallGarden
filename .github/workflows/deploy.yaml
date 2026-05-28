@@ -57,9 +57,7 @@ jobs:
           npm run build
 
       - name: Step 3 - Execute Quartz Static Site Generation Build
-        run: |
-          cd ..
-          npm run quartz build
+        run: npm run quartz build
 
       # =========================================================================
       # Upload and Deploy the Static 'public/' Directory Assets
