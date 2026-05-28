@@ -58,7 +58,6 @@ jobs:
           mkdir -p static/wasm
           
           # 2. Copy the built WASM files into the source 'static' directory
-          # Do NOT use 'public/' here.
           cp wasm-modules/quantum-sim/pkg/quantum_sim_bg.wasm static/wasm/
           cp wasm-modules/quantum-sim/pkg/quantum_sim.js static/wasm/
 

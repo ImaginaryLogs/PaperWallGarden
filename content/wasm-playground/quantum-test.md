@@ -56,8 +56,7 @@ This page is automatically intercepted by Quartz. The custom Preact component
 
 <script type="module">
   const isGitHubPages = window.location.hostname.includes('github.io');
-  const basePath = isGitHubPages ? '/PaperWallGarden' : '';
-
+    const basePath = isGitHubPages ? '/paper-wall-garden' : '';
   // 2. Import using the dynamic base path
   import init, { MultiQubitState } from `${basePath}/wasm/quantum_sim.js`;
 
