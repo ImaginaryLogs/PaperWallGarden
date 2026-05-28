@@ -58,9 +58,9 @@ jobs:
 
       - name: Step 3 - Execute Quartz Static Site Generation Build
         run: |
-          npm run quartz create -- --strategy new --template default
+          rm -rf .quartz/plugins
+          node ./quartz/bootstrap-cli.mjs build --bundleInfo
           npm run quartz build
-
       # =========================================================================
       # Upload and Deploy the Static 'public/' Directory Assets
       # =========================================================================

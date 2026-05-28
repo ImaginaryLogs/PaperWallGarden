@@ -7,7 +7,7 @@ configuration:
   analytics:
     provider: plausible
   locale: en-US
-  baseUrl: imaginarylogs.github.io/PaperWallGarden
+  baseUrl: imaginarylogs.github.io/paper-wall-garden
   ignorePatterns:
     - private
     - templates
@@ -61,17 +61,7 @@ plugins:
   - source: github:quartz-community/obsidian-flavored-markdown
     enabled: true
     options:
-      comments: true
-      highlight: true
-      wikilinks: true
-      callouts: true
-      mermaid: true
-      parseTags: true
-      parseArrows: true
-      parseBlockReferences: true
       enableInHtmlEmbed: false
-      enableYouTubeEmbed: true
-      enableVideoEmbed: true
       enableCheckbox: true
     order: 30
   - source: github:quartz-community/github-flavored-markdown
@@ -100,7 +90,7 @@ plugins:
     enabled: false
     order: 85
   - source: github:quartz-community/hard-line-breaks
-    enabled: true
+    enabled: false
     order: 90
   - source: github:quartz-community/ox-hugo
     enabled: false
@@ -256,36 +246,6 @@ plugins:
       position: beforeBody
       priority: 15
       display: all
-  - source:
-      name: quartz-themes
-      repo: github:saberzero1/quartz-themes
-      subdir: plugin
-    enabled: true
-    options:
-      theme: default
-  - source: github:quartz-community/obsidian-plugin-excalidraw
-    enabled: true
-    options:
-      enableInteraction: true
-      darkMode: auto
-      exportPadding: 20
-    order: 50
-  # ─── ADD YOUR LOCAL WASM PLUGINS HERE ───────────────────────────
-  - source:
-      name: quartz-plugin-wasm-playground
-      repo: ./quartz-plugin-wasm-playground
-    enabled: true
-    order: 100
-
-  - source:
-      name: quartz-plugin-wasm-playground
-      repo: ./quartz-plugin-wasm-playground
-    enabled: true
-    options:
-      wasmModulesDir: "./wasm-modules"
-      publicPrefix:   "/wasm"
-      frontmatterKey: "wasm-module"
-    order: 101
 layout:
   groups:
     toolbar:
