@@ -12,3 +12,12 @@ replit.nix
 .quartz/
 quartz/cli/tui/dist/
 wasm-modules/*/pkg/
+
+# Ignore local development dependencies and distribution files
+node_modules/
+.quartz-cache/
+public/
+
+# Ignore compiled rust target binaries, but DO NOT ignore the pkg folder
+# because our plugin needs to find quantum_sim.js and quantum_sim_bg.wasm!
+wasm-modules/*/target/
