@@ -1,24 +1,23 @@
-# build output
-dist/
-# generated types
-.astro/
-
-# dependencies
-node_modules/
-
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-
-# environment variables
-.env
-.env.production
-
-# macOS-specific files
 .DS_Store
+.gitignore
+node_modules
+public
+prof
+tsconfig.tsbuildinfo
+.obsidian
+.quartz-cache
+private/
+.replit
+replit.nix
+.quartz/
+quartz/cli/tui/dist/
+wasm-modules/*/pkg/
 
-# jetbrains setting folder
-.idea/
+# Ignore local development dependencies and distribution files
+node_modules/
+.quartz-cache/
+public/
+
+# Ignore compiled rust target binaries, but DO NOT ignore the pkg folder
+# because our plugin needs to find quantum_sim.js and quantum_sim_bg.wasm!
+wasm-modules/*/target/

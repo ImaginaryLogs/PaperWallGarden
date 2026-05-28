@@ -1,101 +1,61 @@
-// wasm-modules/quantum-sim/src/lib.rs
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub struct QuantumState {
-    alpha_re: f64,
-    alpha_im: f64,
-    beta_re: f64,
-    beta_im: f64,
+pub struct MultiQubitState {
+    // Amplitudes for |00>, |01>, |10>, |11>
+    // Stored as separate real and imaginary components for WASM compatibility
+    c00_re: f64, c00_im: f64,
+    c01_re: f64, c01_im: f64,
+    c10_re: f64, c10_im: f64,
+    c11_re: f64, c11_im: f64,
 }
 
 #[wasm_bindgen]
-impl QuantumState {
+impl MultiQubitState {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        // Initialize state to pure |0⟩ ground state: 1.0 + 0.0i
-        QuantumState { 
-            alpha_re: 1.0, 
-            alpha_im: 0.0, 
-            beta_re: 0.0, 
-            beta_im: 0.0 
+        // Initialize to the pure ground state |00> (1.0 + 0.0i, all others 0)
+        MultiQubitState {
+            c00_re: 1.0, c00_im: 0.0,
+            c01_re: 0.0, c01_im: 0.0,
+            c10_re: 0.0, c10_im: 0.0,
+            c11_re: 0.0, c11_im: 0.0,
         }
     }
 
-    /// Apply Hadamard gate: |0⟩ → (|0⟩+|1⟩)/√2, |1⟩ → (|0⟩-|1⟩)/√2
+    /// Apply Hadamard to Qubit 0 (Targeting the first index slot)
     #[wasm_bindgen]
-    pub fn hadamard(&mut self) {
-        let sqrt2 = 2.0f64.sqrt();
+    pub fn hadamard_q0(&mut self) {
+        let s = 2.0f64.sqrt();
         
-        let a_re = self.alpha_re;
-        let a_im = self.alpha_im;
-        let b_re = self.beta_re;
-        let b_im = self.beta_im;
+        // Pairwise combinations mapping state transformations:
+        // |00> and |10> mix together; |01> and |11> mix together.
+        let (r00, i00, r10, i10) = (self.c00_re, self.c00_im, self.c10_re, self.c10_im);
+        self.c00_re = (r00 + r10) / s; self.c00_im = (i00 + i10) / s;
+        self.c10_re = (r00 - r10) / s; self.c10_im = (i00 - i10) / s;
 
-        // New Alpha = (Alpha + Beta) / sqrt(2)
-        self.alpha_re = (a_re + b_re) / sqrt2;
-        self.alpha_im = (a_im + b_im) / sqrt2;
-
-        // New Beta = (Alpha - Beta) / sqrt(2)
-        self.beta_re = (a_re - b_re) / sqrt2;
-        self.beta_im = (a_im - b_im) / sqrt2;
+        let (r01, i01, r11, i11) = (self.c01_re, self.c01_im, self.c11_re, self.c11_im);
+        self.c01_re = (r01 + r11) / s; self.c01_im = (i01 + i11) / s;
+        self.c11_re = (r01 - r11) / s; self.c11_im = (i01 - i11) / s;
     }
 
-    /// Apply Pauli-X (NOT) gate
+    /// Apply Controlled-NOT (CNOT). Qubit 0 is Control, Qubit 1 is Target.
+    /// If Qubit 0 is |1>, flip the state of Qubit 1 (|10> <-> |11>).
     #[wasm_bindgen]
-    pub fn pauli_x(&mut self) {
-        std::mem::swap(&mut self.alpha_re, &mut self.beta_re);
-        std::mem::swap(&mut self.alpha_im, &mut self.beta_im);
+    pub fn cnot(&mut self) {
+        // Swap amplitudes of |10> and |11>
+        std::mem::swap(&mut self.c10_re, &mut self.c11_re);
+        std::mem::swap(&mut self.c10_im, &mut self.c11_im);
     }
 
-    /// Apply Pauli-Z (Phase Flip) gate
+    /// Returns probabilities for [|00>, |01>, |10>, |11>] to render on the UI chart
     #[wasm_bindgen]
-    pub fn pauli_z(&mut self) {
-        self.beta_re = -self.beta_re;
-        self.beta_im = -self.beta_im;
-    }
-
-    /// Apply arbitrary Rotation around the X-axis by angle theta (in radians)
-    #[wasm_bindgen]
-    pub fn rotate_x(&mut self, theta: f64) {
-        let c = (theta / 2.0).cos();
-        let s = (theta / 2.0).sin();
-
-        let a_re = self.alpha_re;
-        let a_im = self.alpha_im;
-        let b_re = self.beta_re;
-        let b_im = self.beta_im;
-
-        // Matrix transform multiplication: New Alpha = cos(θ/2)*α - i*sin(θ/2)*β
-        self.alpha_re = c * a_re + s * b_im;
-        self.alpha_im = c * a_im - s * b_re;
-
-        // Matrix transform multiplication: New Beta = -i*sin(θ/2)*α + cos(θ/2)*β
-        self.beta_re = c * b_re + s * a_im;
-        self.beta_im = c * b_im - s * a_re;
-    }
-
-    /// Returns [theta, phi] for Bloch sphere coordinates from complex amplitudes
-    #[wasm_bindgen]
-    pub fn bloch_coords(&self) -> Vec<f64> {
-        // Probability of reading |0⟩ state is |alpha|^2
-        let prob_zero = (self.alpha_re * self.alpha_re) + (self.alpha_im * self.alpha_im);
-        
-        // Clamp value between 0.0 and 1.0 to shield against microscopic float rounding errors
-        let prob_zero_clamped = prob_zero.max(0.0).min(1.0);
-        
-        // Theta = 2 * acos(sqrt(P(0)))
-        let theta = 2.0 * prob_zero_clamped.sqrt().acos();
-
-        // Compute phase angle phi = arg(beta) - arg(alpha)
-        let alpha_phase = self.alpha_im.atan2(self.alpha_re);
-        let beta_phase = self.beta_im.atan2(self.beta_re);
-        let mut phi = beta_phase - alpha_phase;
-        
-        if phi < 0.0 {
-            phi += 2.0 * std::f64::consts::PI;
-        }
-
-        vec![theta, phi]
+    pub fn get_probabilities(&self) -> Vec<f64> {
+        vec![
+            self.c00_re.powi(2) + self.c00_im.powi(2),
+            self.c01_re.powi(2) + self.c01_im.powi(2),
+            self.c10_re.powi(2) + self.c10_im.powi(2),
+            self.c11_re.powi(2) + self.c11_im.powi(2),
+        ]
     }
 }

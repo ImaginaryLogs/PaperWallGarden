@@ -1,0 +1,13 @@
+{../../../quartz-plugin-wasm-playground/dist../../../quartz-plugin-wasm-playground/src
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

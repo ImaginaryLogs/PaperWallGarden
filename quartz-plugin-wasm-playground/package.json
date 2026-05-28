@@ -1,0 +1,37 @@
+{
+  "name": "quartz-plugin-wasm-playground",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types":  "./dist/index.d.ts"
+    },
+    "./frames": {
+      "import": "./dist/frames/index.js",
+      "types":  "./dist/frames/index.d.ts"
+    }
+  },
+  "quartz": {
+    "name": "quartz-plugin-wasm-playground",
+    "displayName": "WASM Playground",
+    "category": [
+      "pageType",
+      "emitter"
+    ],
+    "version": "0.1.0",
+    "quartzVersion": ">=5.0.0"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@quartz-community/types": "github:quartz-community/types",
+    "@quartz-community/utils": "github:quartz-community/utils"
+  },
+  "devDependencies": {
+    "preact": "^10.28.2",
+    "tsup":   "^8.0.0",
+    "typescript": "^5.9.3"
+  }
+}

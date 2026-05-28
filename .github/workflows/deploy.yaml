@@ -1,10 +1,9 @@
-# .github/workflows/deploy.yml
-name: Build and Deploy to GitHub Pages
+name: Deploy Quartz Site with WASM Playground
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches:
+      - main  # Change this to your default branch name if it is master or quartz-refactor
 
 permissions:
   contents: read
@@ -12,103 +11,70 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
-  build-wasm:
-    name: Compile Wasm Modules
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust + wasm-pack
-        uses: dtolnay/rust-toolchain@stable
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
         with:
-          targets: wasm32-unknown-unknown
+          submodules: true
 
-      - name: Cache Rust artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            wasm-modules/*/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
-      - name: Build quantum-sim Wasm
-        run: |
-          cd wasm-modules/quantum-sim
-          wasm-pack build --target web --out-dir ../compiled/quantum-sim
-
-      - name: Build black-scholes Wasm
-        run: |
-          cd wasm-modules/black-scholes
-          wasm-pack build --target web --out-dir ../compiled/black-scholes
-
-      - name: Upload Wasm artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: wasm-compiled
-          path: wasm-modules/compiled/
-
-  build-site:
-    name: Build Astro Site
-    runs-on: ubuntu-latest
-    needs: build-wasm
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # Fetch full history for git-based last-modified dates
-          fetch-depth: 0
-
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
-      - name: Download Wasm artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: wasm-compiled
-          path: wasm-modules/compiled/
+      # =========================================================================
+      # CRITICAL STEP: Install Rust toolchain and wasm-pack for the runner environment
+      # =========================================================================
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
 
-      - name: Copy Wasm to public dir
+      - name: Install wasm-pack
         run: |
-          mkdir -p public/wasm
-          cp -r wasm-modules/compiled/* public/wasm/
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Install dependencies
+      # =========================================================================
+      # THE 3-STEP PIPELINE (Executed automatically inside the cloud runner)
+      # =========================================================================
+      - name: Install Project Dependencies
         run: npm ci
 
-      - name: Create vault symlink (if not committed)
+      - name: Step 1 - Compile Rust WebAssembly Target
         run: |
-          if [ ! -L src/content/garden ]; then
-            ln -sf ../../../obsidian src/content/garden
-          fi
+          cd wasm-modules/quantum-sim
+          wasm-pack build --target web
 
-      - name: Build Astro
-        run: npm run build
-        env:
-          # Makes base URL available for correct asset resolution
-          PUBLIC_SITE_BASE: '/YOUR-REPO-NAME'
+      - name: Step 2 - Build the Local Quartz Plugin Bundle
+        run: |
+          cd quartz-plugin-wasm-playground
+          npm run build
 
-      - name: Upload Pages artifact
+      - name: Step 3 - Execute Quartz Static Site Generation Build
+        run: |
+          cd ..
+          npm run quartz build
+
+      # =========================================================================
+      # Upload and Deploy the Static 'public/' Directory Assets
+      # =========================================================================
+      - name: Upload Static Web Production Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/
+          path: public
 
   deploy:
-    name: Deploy to GitHub Pages
+    needs: build
     runs-on: ubuntu-latest
-    needs: build-site
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps: deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

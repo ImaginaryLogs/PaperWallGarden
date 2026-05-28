@@ -1,128 +1,153 @@
-# Astro Starter Kit: Minimal
+# Quartz v5
 
-```sh
-npm create astro@latest -- --template minimal
+> “[One] who works with the door open gets all kinds of interruptions, but [they] also occasionally gets clues as to what the world is and what might be important.” — Richard Hamming
+
+Quartz is a set of tools that helps you publish your [digital garden](https://jzhao.xyz/posts/networked-thought) and notes as a website for free.
+
+🔗 Read the documentation and get started: https://quartz.jzhao.xyz/
+
+[Join the Discord Community](https://discord.gg/cRFFHYye7t)
+
+## Sponsors
+
+<p align="center">
+  <a href="https://github.com/sponsors/jackyzha0">
+    <img src="https://cdn.jsdelivr.net/gh/jackyzha0/jackyzha0/sponsorkit/sponsors.svg" />
+  </a>
+</p>
+
+# Quartz WebAssembly Playground Plugin (quartz-plugin-wasm-playground)
+
+A specialized Quartz v5 plugin ecosystem that compiles, orchestrates, and mirrors multi-language WebAssembly modules (like Rust wasm-pack binaries) directly into your dynamic digital garden layouts.
+
+This plugin bridges the gap between high-performance systems-level computing (Rust memory linear sandboxes) and web views using custom structural routing contexts.
+
+## Compilation Pipeline
+Because the playground utilizes a nested architectural flow (Rust Code $\rightarrow$ WASM Package $\rightarrow$ Quartz Plugin Bundle $\rightarrow$ Public Garden Dist), changing underlying simulation code requires compiling from the bottom up.Whenever you update your Rust structures (lib.rs) or add a completely new module folder, run this sequence to guarantee Quartz doesn't serve cached assets:
+
+```bash
+# STEP 1: Compile the Rust Core into WASM Binaries + JS Glue Bindings
+cd wasm-modules/quantum-sim
+wasm-pack build --target web
+
+# STEP 2: Rebuild the Quartz Local Plugin Workspace
+cd ../../quartz-plugin-wasm-playground
+npm run build
+
+# STEP 3: Recompile Your Quartz Site & Serve to Local Network
+cd ..
+npm run quartz build -- --serve
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
+# Repository Architecture
 ```text
-my-garden/
-│
-├── .github/
-│   └── workflows/
-│       └── deploy.yml              # GitHub Actions: build + deploy to gh-pages
-│
-├── obsidian-vault/                 # ← Your actual Obsidian vault (open this in Obsidian)
-│   ├── .obsidian/                  # Obsidian app config (gitignored for sensitive parts)
-│   │   ├── app.json
-│   │   └── plugins/
-│   ├── _attachments/               # Images, PDFs vault-wide
-│   ├── quantum/
-│   │   ├── bloch-sphere-notes.md
-│   │   └── qubit-overview.canvas
-│   ├── ml/
-│   │   └── transformer-arch.canvas
-│   ├── automata/
-│   │   └── turing-machine.md
-│   └── quant-fi/
-│       └── black-scholes.md
-│
-├── src/                            # Astro source
-│   ├── content/                    # Astro Content Collections config
-│   │   ├── config.ts               # defineCollection schemas
-│   │   ├── garden -> ../../obsidian-vault  # SYMLINK to vault
-│   │   └── playground/             # MDX files for IDP
-│   │       ├── quantum-circuit.mdx
-│   │       ├── hmm-inference.mdx
-│   │       └── black-scholes-sim.mdx
-│   │
-│   ├── components/
-│   │   ├── garden/
-│   │   │   ├── ObsidianCanvas.tsx   # Canvas JSON → React Flow
-│   │   │   ├── WikiLink.astro       # [[wikilink]] resolver
-│   │   │   ├── Callout.astro        # > [!note] Obsidian callouts
-│   │   │   ├── BacklinkPanel.astro  # Backlink graph sidebar
-│   │   │   └── GraphView.tsx        # D3/React Force-graph
-│   │   │
-│   │   ├── playground/
-│   │   │   ├── WasmLoader.tsx       # Generic Wasm module wrapper
-│   │   │   ├── BlochSphere.tsx      # Three.js quantum viz
-│   │   │   ├── CircuitEditor.tsx    # Quantum circuit drag-and-drop
-│   │   │   ├── TuringMachine.tsx    # Automata simulator
-│   │   │   ├── StochasticChart.tsx  # Monte Carlo / GBM viz
-│   │   │   └── MLInference.tsx      # ONNX Runtime Web component
-│   │   │
-│   │   └── shared/
-│   │       ├── CrossLink.astro      # ODG ↔ IDP cross-reference links
-│   │       └── Layout.astro         # Unified site shell
-│   │
-│   ├── pages/
-│   │   ├── index.astro              # Homepage / hub
-│   │   ├── garden/
-│   │   │   └── [...slug].astro      # Dynamic ODG routing
-│   │   └── playground/
-│   │       └── [...slug].astro      # Dynamic IDP routing
-│   │
-│   ├── lib/
-│   │   ├── obsidian/
-│   │   │   ├── parseCanvas.ts       # .canvas JSON parser
-│   │   │   ├── resolveWikilinks.ts  # [[link]] → URL resolver
-│   │   │   └── buildBacklinks.ts    # Backlink index builder
-│   │   └── wasm/
-│   │       └── loader.ts            # Wasm module loader utility
-│   │
-│   └── styles/
-│       ├── global.css
-│       ├── garden.css               # Obsidian-like typography
-│       └── playground.css           # Code-lab aesthetic
-│
-├── wasm-modules/                    # Rust/C++ source for Wasm
-│   ├── quantum-sim/
-│   │   ├── Cargo.toml
-│   │   └── src/
-│   │       └── lib.rs               # Quantum gate math
-│   ├── black-scholes/
-│   │   ├── Cargo.toml
-│   │   └── src/
-│   │       └── lib.rs               # Options pricing engine
-│   └── compiled/                    # Build output (.wasm + .js glue)
-│       ├── quantum_sim_bg.wasm
-│       └── black_scholes_bg.wasm
-│
-├── public/                          # Static assets (copied verbatim)
-│   ├── fonts/
-│   └── og-images/
-│
-├── astro.config.mjs
-├── tsconfig.json
-├── package.json
-└── .gitignore
+PaperWallGarden/                  # Your Main Quartz Project Root
+├── content/                     # Markdown Vault
+│   └── wasm-playground/         # Target virtual layout notes
+│       └── quantum-test.md      # Live interactive simulation file
+├── wasm-modules/                # Raw Native Source Codes
+│   └── quantum-sim/
+│       ├── src/lib.rs           # Core Simulation logic (struct mappings)
+│       └── pkg/                 # Auto-generated by wasm-pack (WASM/JS)
+└── quartz-plugin-wasm-playground/ # The Integrated Sub-Package Workspace
+    ├── src/
+    │   ├── index.ts             # Global manifest entry exports
+    │   ├── emitter.ts           # Recursive asset file distributor
+    │   └── pageType.ts          # Virtual router context orchestrator
+    └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Adding a Brand New WASM Project
+To add another workspace simulation module (e.g., a molecular dynamics or lattice calculator) alongside quantum-sim:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Initialize Your Rust Target
+Create a new subdirectory structure inside wasm-modules/ configuring wasm-bindgen configurations inside its Cargo.toml:
 
-Any static assets, like images, can be placed in the `public/` directory.
+```Ini, TOML
+[package]
+name = "molecular_dynamics"
+version = "0.1.0"
+edition = "2021"
 
-## 🧞 Commands
+[lib]
+crate-type = ["cdylib"]
 
-All commands are run from the root of the project, from a terminal:
+[dependencies]
+wasm-bindgen = "0.2"
+```
+Implement your structures inside src/lib.rs using explicit #[wasm_bindgen] export declarations:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```Rust
+use wasm_bindgen::prelude::*;
 
-## 👀 Want to learn more?
+#[wasm_bindgen]
+pub struct Simulator { value: f64 }
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+#[wasm_bindgen]
+impl Simulator {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Self { Simulator { value: 0.0 } }
+}
+```
+2. Update Emitter & Page Target Scopes
+The custom asset module distributor (src/emitter.ts) scans recursively inside all child targets under wasm-modules/*/pkg/. Running wasm-pack build --target web creates this output structure automatically.
+
+3. Activating It in Your Site Configuration
+Ensure your root quartz.config.yaml includes references to your local plugin bundle workspace configuration blocks:
+
+```YAML
+  # ─── ADD YOUR LOCAL WASM PLUGINS HERE ───────────────────────────
+  - source:
+      name: WasmPlaygroundPage
+      repo: ./quartz-plugin-wasm-playground
+    enabled: true
+    options:
+      wasmModulesDir: "./wasm-modules"
+      publicPrefix:   "/wasm"
+      frontmatterKey: "wasm-module"
+    order: 100
+
+  - source:
+      name: WasmModuleEmitter
+      repo: ./quartz-plugin-wasm-playground
+    enabled: true
+    options:
+      wasmModulesDir: "./wasm-modules"
+      publicPrefix:   "/wasm"
+    order: 101
+```
+
+📝 Embedding Simulations in Markdown
+You can instantiate and load your compiled algorithms within any standard markdown note by embedding an inline interactive environment:
+
+HTML
+## Live Multi-Qubit Superposition Sandbox
+
+<div class="sandbox" style="padding:1rem; background:#161618; border-radius:8px;">
+  <div id="readout">Awaiting Initialization...</div>
+  <button id="gate-trigger">Apply Operation</button>
+</div>
+
+<script type="module">
+  // 1. Import initialized structural constructors from the compiled public target
+  import init, { MultiQubitState } from "/wasm/quantum_sim.js"
+
+  async function boot() {
+    // 2. Stream and instantiate raw binary memory allocations
+    await init()
+    let system = new MultiQubitState()
+
+    const output = document.getElementById("readout")
+    
+    document.getElementById("gate-trigger").addEventListener("click", () => {
+      system.hadamard_q0()
+      output.innerText = `Probabilities: ${system.get_probabilities().join(', ')}`
+    })
+  }
+
+  boot().catch(console.error)
+</script>
+🔍 Troubleshooting & Verification
+ReferenceError: X is not defined: Your local plugin's distribution bundle (dist/) is out of sync with your Rust compilation footprints. Run the full 3-Step Compilation Pipeline to force cache busting across intermediate layers.
+
+Network 404 missing file blocks: Confirm your wasm-pack command specifies --target web. If it defaults to a bundler environment target, the browser will crash when parsing standard browser import statements.
