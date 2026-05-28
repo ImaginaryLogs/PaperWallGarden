@@ -270,6 +270,22 @@ plugins:
       darkMode: auto
       exportPadding: 20
     order: 50
+  # ─── ADD YOUR LOCAL WASM PLUGINS HERE ───────────────────────────
+  - source:
+      name: quartz-plugin-wasm-playground
+      repo: ./quartz-plugin-wasm-playground
+    enabled: true
+    order: 100
+
+  - source:
+      name: quartz-plugin-wasm-playground
+      repo: ./quartz-plugin-wasm-playground
+    enabled: true
+    options:
+      wasmModulesDir: "./wasm-modules"
+      publicPrefix:   "/wasm"
+      frontmatterKey: "wasm-module"
+    order: 101
 layout:
   groups:
     toolbar:

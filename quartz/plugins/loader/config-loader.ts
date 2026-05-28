@@ -242,7 +242,7 @@ export async function loadQuartzConfig(
 
   if (!json) {
     // Fallback: import old-style config directly
-    const oldConfig = await import("../..")
+    const oldConfig = await import("../../../quartz")
     return oldConfig.default
   }
 
@@ -624,7 +624,7 @@ export async function loadQuartzLayout(layoutOverrides?: {
 
   if (!json) {
     // Fallback: import old-style layout directly
-    const oldLayout = await import("../..")
+    const oldLayout = await import("../../../quartz")
     return oldLayout.layout
   }
 

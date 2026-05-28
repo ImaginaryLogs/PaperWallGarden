@@ -193,6 +193,12 @@
       "commit": "a53cf02ce7faca400bcf3cfeed47eb860329e534",
       "installedAt": "2026-05-28T04:01:03.851Z"
     },
+    "quartz-plugin-wasm-playground": {
+      "source": "./quartz-plugin-wasm-playground",
+      "resolved": "/home/lgyrhadeswslubuntu/PaperWallGarden/quartz-plugin-wasm-playground",
+      "commit": "local",
+      "installedAt": "2026-05-28T05:44:40.079Z"
+    },
     "quartz-themes": {
       "source": {
         "name": "quartz-themes",
