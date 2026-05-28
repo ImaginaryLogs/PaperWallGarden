@@ -3,7 +3,7 @@ name: Deploy Quartz Site with WASM Playground
 on:
   push:
     branches:
-      - main  # Change this to your default branch name if it is master or quartz-refactor
+      - main  # Adjust this if your active development branch is quartz-refactor
 
 permissions:
   contents: read
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps: deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }} # Fixed: Changed colons to dots
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
