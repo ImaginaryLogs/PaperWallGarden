@@ -1,0 +1,81 @@
+name: Deploy Quartz Site with WASM Playground
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch name if it is master or quartz-refactor
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      # =========================================================================
+      # CRITICAL STEP: Install Rust toolchain and wasm-pack for the runner environment
+      # =========================================================================
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install wasm-pack
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      # =========================================================================
+      # THE 3-STEP PIPELINE (Executed automatically inside the cloud runner)
+      # =========================================================================
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Step 1 - Compile Rust WebAssembly Target
+        run: |
+          cd wasm-modules/quantum-sim
+          wasm-pack build --target web
+
+      - name: Step 2 - Build the Local Quartz Plugin Bundle
+        run: |
+          cd quartz-plugin-wasm-playground
+          npm run build
+
+      - name: Step 3 - Execute Quartz Static Site Generation Build
+        run: |
+          cd ..
+          npm run quartz build
+
+      # =========================================================================
+      # Upload and Deploy the Static 'public/' Directory Assets
+      # =========================================================================
+      - name: Upload Static Web Production Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps: deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
