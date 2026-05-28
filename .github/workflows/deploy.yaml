@@ -57,7 +57,9 @@ jobs:
           npm run build
 
       - name: Step 3 - Execute Quartz Static Site Generation Build
-        run: npm run quartz build
+        run: |
+          npx quartz create --skip-links
+          npm run quartz build
 
       # =========================================================================
       # Upload and Deploy the Static 'public/' Directory Assets
