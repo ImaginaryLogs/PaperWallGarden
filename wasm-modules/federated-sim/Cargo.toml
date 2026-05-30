@@ -1,0 +1,15 @@
+[package]
+name = "federated-sim"
+version = "0.1.0"
+edition = "2021"
+description = "Federated Learning (FedAvg/FedProx) Simulator compiled to WebAssembly"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+
+[profile.release]
+opt-level = "s"
+lto = true
