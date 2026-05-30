@@ -41,10 +41,18 @@ jobs:
         run: npm ci
 
       # 2. Compile the Rust logic
-      - name: Step 1 - Compile Rust WebAssembly Target
+      - name: Step 1 - Compile All Rust WebAssembly Modules
         run: |
-          cd wasm-modules/quantum-sim
-          wasm-pack build --target web
+          for d in wasm-modules/*/; do
+            if [ -f "$d/Cargo.toml" ]; then
+              echo "--------------------------------------------------"
+              echo "Automatically compiling module in: $d"
+              echo "--------------------------------------------------"
+              cd "$d"
+              wasm-pack build --target web
+              cd ../..
+            fi
+          done
 
       # 3. Build the plugin exactly like you did locally
       - name: Step 2 - Build the Local Quartz Plugin Bundle
@@ -56,14 +64,14 @@ jobs:
       - name: Diagnostic 1 - Confirm build output exists
         run: |
           echo "Checking if WASM build artifacts exist..."
-          ls -l wasm-modules/quantum-sim/pkg/quantum_sim_bg.wasm || echo "ERROR: WASM binary missing!"
-          ls -l wasm-modules/quantum-sim/pkg/quantum_sim.js || echo "ERROR: WASM JS missing!"
+          ls -l wasm-modules/*/pkg/*.wasm || echo "ERROR: No WASM binaries found!"
+          ls -l wasm-modules/*/pkg/*.js || echo "ERROR: No WASM JS files found!"
 
-      - name: Step 2.5 - Sync WASM files
+      - name: Step 2.5 - Automated Mass Import WASM assets
         run: |
           mkdir -p static/wasm
-          cp wasm-modules/quantum-sim/pkg/quantum_sim_bg.wasm static/wasm/
-          cp wasm-modules/quantum-sim/pkg/quantum_sim.js static/wasm/
+          cp wasm-modules/*/pkg/*.js static/wasm/
+          cp wasm-modules/*/pkg/*.wasm static/wasm/
 
       # DIAGNOSTIC PROBE: Check if static/wasm was actually populated
       - name: Diagnostic 2 - Confirm static folder populated
@@ -71,24 +79,25 @@ jobs:
           echo "Listing contents of static/wasm/:"
           ls -l static/wasm/
 
-      - name: Step 3 - Execute Quartz Static Site Generation Build
+      - name: Step 3 - Execute Quartz Build and Mirror Output
         run: |
-          # Ensure the directory exists so the bundler doesn't crash on import
+          # Safe fallback to make sure Quartz bundler doesn't throw a plugin import error
           mkdir -p .quartz/plugins
-          
-          # If the index file is missing, create a placeholder so the build can proceed
           if [ ! -f .quartz/plugins/index.ts ]; then
             echo 'export const CustomOgImagesEmitterName = "CustomOgImagesEmitter"; export const plugins = {};' > .quartz/plugins/index.ts
           fi
-          
-          # Run the build
-          npm run quartz build
-          rsync -av static/wasm/ public/wasm/
 
-      - name: Diagnostic - List public directory
+          # Execute the primary static site generator build
+          npm run quartz build
+          
+          # Force mirror your custom compiled assets back into public right before upload
+          mkdir -p public/wasm
+          cp -r static/wasm/* public/wasm/
+
+      - name: Diagnostic 3 - List public directory
         run: |
           echo "Listing contents of public/wasm:"
-          ls -R public/wasm || echo "Folder public/wasm does not exist!"
+          ls -R public/wasm || echo "CRITICAL FAILED: Folder public/wasm does not exist!"
 
       - name: Upload Static Web Production Artifacts
         uses: actions/upload-pages-artifact@v3
