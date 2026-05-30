@@ -1,0 +1,42 @@
+{
+	"nodes":[
+		{"id":"39081578a45de3ef","type":"file","file":"msautomata/Petri nets.md","x":780,"y":160,"width":400,"height":400},
+		{"id":"c59f110a43052a47","type":"file","file":"msautomata/Markov Models.md","x":780,"y":620,"width":400,"height":400},
+		{"id":"37b88034c4bca434","type":"file","file":"msautomata/Cellular automata.md","x":380,"y":-640,"width":561,"height":471},
+		{"id":"2b884623ecc0ea6b","type":"file","file":"Pasted image 20260530195945.png","x":-700,"y":-240,"width":480,"height":425},
+		{"id":"d7ef0413c402b3c5","type":"text","text":"Bioinformatics","x":2188,"y":-263,"width":172,"height":63,"color":"1"},
+		{"id":"f7cde0ea4c26e587","type":"text","text":"Operating Systems","x":2188,"y":-183,"width":172,"height":63,"color":"2"},
+		{"id":"28d57927ed5c75c2","type":"text","text":"Distributed Infrastructure","x":2188,"y":-91,"width":172,"height":63,"color":"3"},
+		{"id":"d7b990d51bf1d000","type":"text","text":"Quantum Communication","x":2188,"y":0,"width":172,"height":63,"color":"4"},
+		{"id":"63be02694c519bed","type":"text","text":"Federated Learning","x":2188,"y":90,"width":172,"height":61,"color":"5"},
+		{"id":"1cf4646f94fc1fd8","type":"text","text":"Business","x":2188,"y":-340,"width":172,"height":60},
+		{"id":"197d68e19d3bfd0e","type":"text","text":"Bioinformatics","x":941,"y":-640,"width":172,"height":63,"color":"1"},
+		{"id":"01103eb6982b5179","type":"file","file":"msautomata/Grid-based cellular automata.md","x":1600,"y":-840,"width":400,"height":400},
+		{"id":"d39b433bd5a4317b","type":"file","file":"msautomata/Network-graph cellular automata.md","x":1600,"y":-280,"width":400,"height":400},
+		{"id":"135cf16e48fb9813","type":"text","text":"Operating Systems","x":941,"y":-577,"width":172,"height":63,"color":"2"},
+		{"id":"13c8273770614a25","type":"text","text":"Distributed Infrastructure","x":941,"y":-514,"width":172,"height":63,"color":"3"},
+		{"id":"8f49d6103f75df47","type":"text","text":"NLP","x":2188,"y":200,"width":172,"height":60,"color":"6"},
+		{"id":"93584878e723ee47","type":"text","text":"Operating Systems","x":1180,"y":169,"width":172,"height":63,"color":"2"},
+		{"id":"b06b2027d24d0173","type":"text","text":"Quantum Communication","x":1180,"y":232,"width":172,"height":63,"color":"4"},
+		{"id":"0241b7ccbe916ec8","type":"text","text":"Federated Learning","x":1180,"y":295,"width":172,"height":61,"color":"5"},
+		{"id":"ef5fbc9e88c8c7cd","type":"text","text":"Bioinformatics","x":1180,"y":620,"width":172,"height":63,"color":"1"},
+		{"id":"55fb1d2a9008e830","type":"text","text":"NLP","x":1180,"y":683,"width":172,"height":60,"color":"6"},
+		{"id":"dc78a6f2ade87446","type":"text","text":"Business","x":1180,"y":356,"width":172,"height":60},
+		{"id":"8c0bc5cc5edbf3c9","type":"text","text":"Business","x":1180,"y":743,"width":172,"height":60},
+		{"id":"310de00930724c46","type":"text","text":"Business","x":941,"y":-451,"width":172,"height":60},
+		{"id":"bf0db1675bc5014c","type":"file","file":"msautomata/The Tsetlin Machine.md","x":-1060,"y":-2160,"width":600,"height":920},
+		{"id":"d2c2057f68d96d9f","type":"file","file":"msautomata/Extended Finite Automata.md","x":10,"y":-2160,"width":740,"height":680},
+		{"id":"064a51279e86777c","type":"text","text":"Interpretable AI/Explainable Machine Learning","x":-460,"y":-2160,"width":410,"height":60},
+		{"id":"de25abcf214e0060","type":"text","text":"NLP","x":-460,"y":-2100,"width":172,"height":60,"color":"6"},
+		{"id":"1e39129e23560865","type":"text","text":"Cyber-Security","x":750,"y":-2160,"width":172,"height":60}
+	],
+	"edges":[
+		{"id":"9709f171de1c070d","fromNode":"2b884623ecc0ea6b","fromSide":"right","toNode":"39081578a45de3ef","toSide":"left","label":"concurrent resources — things competing, synchronizing, or flowing through a pipeline "},
+		{"id":"8447cdc4d56ea91e","fromNode":"2b884623ecc0ea6b","fromSide":"right","toNode":"c59f110a43052a47","toSide":"left","label":"sequences under uncertainty — noisy observations, probabilistic behavior, learning from data "},
+		{"id":"526ca83e7b824b39","fromNode":"37b88034c4bca434","fromSide":"right","toNode":"01103eb6982b5179","toSide":"left","label":"regular structure"},
+		{"id":"bbbc97ca9c08a84c","fromNode":"37b88034c4bca434","fromSide":"right","toNode":"d39b433bd5a4317b","toSide":"left","label":"irregular (a social graph, \na network topology)"},
+		{"id":"8980f5d6c37b785f","fromNode":"2b884623ecc0ea6b","fromSide":"right","toNode":"37b88034c4bca434","toSide":"left","label":" problem is about spatial emergence "},
+		{"id":"ee9c4dd9e7f4ccf9","fromNode":"2b884623ecc0ea6b","fromSide":"top","toNode":"d2c2057f68d96d9f","toSide":"bottom","label":"on-time probem where the rules are known, precise, and rigid."},
+		{"id":"06fc8e966e7ca1cf","fromNode":"2b884623ecc0ea6b","fromSide":"top","toNode":"bf0db1675bc5014c","toSide":"bottom","label":"problem is boolean/categorical, interpretable, pattern-based"}
+	]
+}
