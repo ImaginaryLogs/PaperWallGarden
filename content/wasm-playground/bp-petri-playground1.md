@@ -31,8 +31,8 @@ consuming and producing tokens according to the process flow.
 const isGitHubPages = window.location.hostname.includes('github.io');
 const basePath = isGitHubPages ? '/PaperWallGarden' : '';
 
-const WASM_JS  = `${basePath}/wasm/petri_sim.js`;
-const WASM_BG  = `${basePath}/wasm/petri_sim_bg.wasm`;
+const WASM_JS  = `${basePath}/wasm/petri_sim1.js`;
+const WASM_BG  = `${basePath}/wasm/petri_sim1_bg.wasm`;
 
 // ============================================================
 // 2. Constants mirroring Rust (place/transition names)

@@ -42,8 +42,8 @@ and how client divergence, dropout, and aggregation strategy affect training.
 <script type="module">
 const isGitHubPages = window.location.hostname.includes('github.io');
 const basePath = isGitHubPages ? '/PaperWallGarden' : '';
-const WASM_JS = `${basePath}/wasm/federated_sim.js`;
-const WASM_BG = `${basePath}/wasm/federated_sim_bg.wasm`;
+const WASM_JS = `${basePath}/wasm/federated_sim1.js`;
+const WASM_BG = `${basePath}/wasm/federated_sim1_bg.wasm`;
 
 const CLIENT_COLORS = ['#3b82f6','#8b5cf6','#ec4899','#f59e0b','#10b981','#ef4444'];
 const CLIENT_LABELS = ['Hospital A','Hospital B','Clinic C','Clinic D','Lab E','Lab F'];

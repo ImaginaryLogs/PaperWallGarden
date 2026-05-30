@@ -1,8 +1,8 @@
 [package]
-name = "os-scheduler"
+name = "federated-sim2"
 version = "0.1.0"
 edition = "2021"
-description = "MLFQ OS Process Scheduler Simulator compiled to WebAssembly"
+description = "Federated Learning (FedAvg/FedProx) Simulator compiled to WebAssembly"
 
 [lib]
 crate-type = ["cdylib"]

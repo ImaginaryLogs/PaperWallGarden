@@ -72,8 +72,8 @@ rounds, toggle an eavesdropper (Eve), and watch the **Quantum Bit Error Rate
 <script type="module">
 const isGitHubPages = window.location.hostname.includes('github.io');
 const basePath = isGitHubPages ? '/PaperWallGarden' : '';
-const WASM_JS = `${basePath}/wasm/qcomm_sim.js`;
-const WASM_BG = `${basePath}/wasm/qcomm_sim_bg.wasm`;
+const WASM_JS = `${basePath}/wasm/qcomm_sim1.js`;
+const WASM_BG = `${basePath}/wasm/qcomm_sim1_bg.wasm`;
 
 const GATE_NAMES = ['X (NOT)','Y','Z (Phase flip)','H (Hadamard)','S (π/2)','T (π/4)'];
 

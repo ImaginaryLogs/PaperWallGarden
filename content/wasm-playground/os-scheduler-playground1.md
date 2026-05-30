@@ -44,8 +44,8 @@ promoted after I/O completion (interactive behaviour), and aged to prevent starv
 <script type="module">
 const isGitHubPages = window.location.hostname.includes('github.io');
 const basePath = isGitHubPages ? '/PaperWallGarden' : '';
-const WASM_JS = `${basePath}/wasm/os_scheduler.js`;
-const WASM_BG = `${basePath}/wasm/os_scheduler_bg.wasm`;
+const WASM_JS = `${basePath}/wasm/os_scheduler1.js`;
+const WASM_BG = `${basePath}/wasm/os_scheduler1_bg.wasm`;
 
 // Per-process colour palette (8 colours, indexed by color_id field)
 const PROC_COLORS = [
