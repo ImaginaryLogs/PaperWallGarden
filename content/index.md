@@ -1,8 +1,4 @@
 ---
-title: Welcome to Quartz
+title: Welcome to the Paper Wall Garden
 ---
-
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
-
 [[automata map.canvas]]

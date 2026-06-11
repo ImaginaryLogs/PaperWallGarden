@@ -1,0 +1,31 @@
+{
+	"nodes":[
+		{"id":"f7f9c62104107a1c","type":"file","file":"pages/archcraft/Expectancy-Value Theory (EVT).md","x":740,"y":560,"width":400,"height":400},
+		{"id":"105d0591d790c976","type":"file","file":"pages/archcraft/Self-Determination Theory.md","x":85,"y":560,"width":400,"height":400},
+		{"id":"2e011d7d8e875fb0","type":"file","file":"pages/archcraft/Persuasive Friction.md","x":740,"y":-800,"width":400,"height":400},
+		{"id":"d6fa2c6c83ad4c6f","type":"file","file":"pages/archcraft/Motivation and Drive.md","x":657,"y":160,"width":567,"height":200},
+		{"id":"511327c4b8694346","type":"file","file":"pages/archcraft/Mental Fatigue and Design Clarity.md","x":657,"y":-120,"width":567,"height":200},
+		{"id":"8b482c6017c8a5fa","type":"file","file":"pages/archcraft/Habits and Resilience.md","x":1360,"y":-120,"width":567,"height":200},
+		{"id":"2ec8a3d329ba8e7b","type":"file","file":"pages/archcraft/Belonging and Identity.md","x":1360,"y":160,"width":567,"height":200},
+		{"id":"122206ccd6d78d5e","type":"file","file":"pages/archcraft/Self-Regulated Learning.md","x":1444,"y":-800,"width":400,"height":400},
+		{"id":"574d65b8ea1423e8","type":"file","file":"pages/archcraft/Growth Mindset Framework.md","x":1927,"y":-800,"width":400,"height":400},
+		{"id":"7cda98631484091a","type":"file","file":"pages/archcraft/Communities of Practice (CoP).md","x":1927,"y":560,"width":400,"height":400},
+		{"id":"73ad1b10798f4662","type":"file","file":"pages/archcraft/Kuhlthau Information Search Pocess.md","x":1444,"y":560,"width":400,"height":400},
+		{"id":"bb040671938c45de","type":"text","text":"","x":4800,"y":1240,"width":250,"height":60},
+		{"id":"ce4689057b857acb","type":"file","file":"pages/archcraft/Cognitive Load Theory.md","x":85,"y":-800,"width":400,"height":400},
+		{"id":"743e7bd4e697c46b","x":2640,"y":-800,"width":940,"height":400,"type":"text","text":"- **RQ1 (Creators & Cognitive Load):** How does the technical friction of developing interactive JSX components versus static Markdown impact the cognitive load of student developers, as measured by GitHub commit micro-trajectories and edit distances?\n    \n- **RQ2 (The Artifact & NLP):** What linguistic and structural markers in the GitHub pull request logs causally differentiate high-effort, authentically human-coded interactive components from AI-generated macroscopic code drops?\n    \n- **RQ3 (Consumers, SDT & EVT):** Does random assignment to an interactive Astro component (experimental) versus a static Markdown component (control) causally increase a visitor's intrinsic motivation and perceived task value, as measured by embedded micro-reflections and clickstream dwell time?"},
+		{"id":"75eac916be1d4daf","x":2640,"y":-340,"width":940,"height":120,"type":"text","text":"Phase 1: Retrospective Observational (The Creators)\nYou cannot easily randomize how the first batch builds their projects without ruining their organic learning. Therefore, Phase 1 is observational. You will categorize the resulting museum pages into \"High Interactivity/High Creator Fric"},
+		{"id":"58adc3d4023fab55","x":2640,"y":-180,"width":940,"height":260,"type":"text","text":"RQ1 (Creators & Cognitive Load): How does the technical friction of developing interactive JSX components versus static Markdown impact the cognitive load of student developers, as measured by GitHub commit micro-trajectories and edit distances?\n\nRQ2 (The Artifact & NLP): What linguistic and structural markers in the GitHub pull request logs causally differentiate high-effort, authentically human-coded interactive components from AI-generated macroscopic code drops?\n\nRQ3 (Consumers, SDT & EVT): Does random assignment to an interactive Astro component (experimental) versus a static Markdown component (control) causally increase a visitor's intrinsic motivation and perceived task value, as measured by embedded micro-reflections and clickstream dwell time?"},
+		{"id":"ac685dcf2b219ed4","x":2640,"y":120,"width":940,"height":140,"type":"text","text":"Phase 2: Randomized A/B Testing (The Consumers)\nThis is where you achieve your organic control. When the younger students visit the Astro site, the server logic will randomly assign their session ID to either the Control Route (static version of a poster) or the Experimental Route (interactive version of the same poster)."}
+	],
+	"edges":[
+		{"id":"92cea4ed66e35fc7","fromNode":"d6fa2c6c83ad4c6f","fromSide":"bottom","toNode":"105d0591d790c976","toSide":"top","label":"viewed by relation"},
+		{"id":"b3b72f92f2b37169","fromNode":"d6fa2c6c83ad4c6f","fromSide":"bottom","toNode":"f7f9c62104107a1c","toSide":"top","label":"viewed by expectation"},
+		{"id":"f85478940097a090","fromNode":"511327c4b8694346","fromSide":"top","toNode":"ce4689057b857acb","toSide":"bottom","label":"viewed within the individual"},
+		{"id":"7daa7da639db955a","fromNode":"511327c4b8694346","fromSide":"top","toNode":"2e011d7d8e875fb0","toSide":"bottom","label":"viewed in a system"},
+		{"id":"be3d650ad6b9e8ea","fromNode":"2ec8a3d329ba8e7b","fromSide":"bottom","toNode":"73ad1b10798f4662","toSide":"top","label":"with themselves\nwhen solving"},
+		{"id":"972dcea06bc926b8","fromNode":"2ec8a3d329ba8e7b","fromSide":"bottom","toNode":"7cda98631484091a","toSide":"top","label":"with others"},
+		{"id":"ec541a2bd2f46fda","fromNode":"8b482c6017c8a5fa","fromSide":"top","toNode":"122206ccd6d78d5e","toSide":"bottom","label":"viewed by steps"},
+		{"id":"843960080542302b","fromNode":"8b482c6017c8a5fa","fromSide":"top","toNode":"574d65b8ea1423e8","toSide":"bottom","label":"viewed by self-belief"}
+	]
+}

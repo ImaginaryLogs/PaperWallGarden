@@ -1,4 +1,4 @@
-Find the lowest-energy state (ground state) of a given problem. e.g. when [solving eigenstates](Solving%20Eigenstates), find the lowest one
+Find the lowest-energy state (ground state) of a given problem. e.g. when [solving eigenstates](Solving%20Eigenstates.md), find the lowest one
 $$
 E_0=\underset{\ket{\psi}}{min}\bra{\psi}\hat H\ket{\psi}
 $$

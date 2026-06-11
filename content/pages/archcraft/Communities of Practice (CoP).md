@@ -1,0 +1,1 @@
+Developed by Jean Lave and Etienne Wenger, this framework posits that learning is an inherently social process. It describes how a learner moves from Legitimate Peripheral Participation  - being a novice observer on the edges of a group) to a Full Participation (becoming an core, expert member of a community) through shared practice and identity formation.

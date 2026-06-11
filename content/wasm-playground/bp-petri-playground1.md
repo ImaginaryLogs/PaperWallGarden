@@ -1,6 +1,11 @@
 ---
 title: Business Process Petri Net Simulator
-tags: [simulation, business-processes, petri-net, wasm]
+tags:
+  - simulation
+  - business-processes
+  - petri-net
+  - wasm
+  - 
 ---
 
 # Business Process Petri Net
