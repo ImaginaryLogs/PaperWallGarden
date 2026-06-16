@@ -1,0 +1,102 @@
+{
+	"nodes":[
+		{"id":"7d44ff7600599630","type":"file","file":"pages/deeplearning/Machine Learning.md","x":-598,"y":-680,"width":638,"height":440},
+		{"id":"53024571520b98f2","type":"file","file":"pages/deeplearning/AI Triad.md","x":-479,"y":-980,"width":400,"height":200},
+		{"id":"a81db69ffc23ee96","type":"file","file":"pages/deeplearning/Distribution Shifts.md","x":-479,"y":220,"width":400,"height":255},
+		{"id":"7476167612f092a1","type":"file","file":"pages/deeplearning/Training Process.md","x":-598,"y":-140,"width":638,"height":280},
+		{"id":"a39a3943d3335e9f","type":"file","file":"pages/deeplearning/Linear Algebra.md","x":206,"y":-800,"width":360,"height":617},
+		{"id":"6426049fd4eb6336","type":"file","file":"pages/deeplearning/Calculus and Optimization.md","x":586,"y":-800,"width":360,"height":400},
+		{"id":"51f82415d3199c1f","type":"file","file":"pages/deeplearning/Probability and Statistics.md","x":966,"y":-800,"width":360,"height":400},
+		{"id":"fcac77b88e03c178","type":"text","text":"# Mathematical Foundations","x":200,"y":-980,"width":373,"height":60},
+		{"id":"8fb71f449bb65924","type":"file","file":"pages/deeplearning/Advanced Techniques.md","x":636,"y":522,"width":660,"height":240},
+		{"id":"b20bcf07b90b8653","type":"file","file":"pages/deeplearning/Evolution of Architectures.md","x":636,"y":220,"width":660,"height":260},
+		{"id":"146a4714f91ecf7d","type":"file","file":"pages/deeplearning/Convolutional Neural Networks.md","x":207,"y":-138,"width":660,"height":300},
+		{"id":"dc4196ab6d3246da","type":"file","file":"pages/deeplearning/Computer Vision Applications.md","x":1480,"y":-1000,"width":660,"height":400},
+		{
+			"id":"520f826a46d959d5",
+			"type":"text",
+			"text":"# LeNet \n\n![[LeNet-5_architecture.svg]]\nUtilized [[Modified National Institute of Standards and Technology]]\nSolves Handwritten Digit Recognition",
+			"styleAttributes":{},
+			"x":1680,
+			"y":-420,
+			"width":524,
+			"height":380
+		},
+		{
+			"id":"1e964c12cd52b5ed",
+			"type":"text",
+			"text":"# LeNet \n\nEarly layers in the network capture low-level features like simple edges and lines. Deeper layers combine these to identify more complex shapes and whole digits.\n\nBy averaging or taking the maximum values in localized regions, the network achieved **translation invariance**. This means it could still recognize a handwritten digit even if it was slightly shifted or distorted in the frame.\n\n",
+			"styleAttributes":{},
+			"x":1680,
+			"y":0,
+			"width":524,
+			"height":260
+		},
+		{
+			"id":"c0dddb27942c53f5",
+			"type":"text",
+			"text":"# AlexNet \nThis won ImageNet competition in 2012, and its a bigger LeNet.\n\nKey modifications:\n- Dropout\n- ReLu\n- MaxPooling\n\nParadigm shift for computer vision\n\n",
+			"styleAttributes":{},
+			"x":1680,
+			"y":300,
+			"width":524,
+			"height":280
+		},
+		{"id":"4ccf648c6845eb2c","type":"file","file":"media-attachments/Pasted image 20260616071204.png","x":2100,"y":220,"width":1040,"height":2022}
+	],
+	"edges":[
+		{"id":"12690df9be5ed3e6","fromNode":"7d44ff7600599630","fromSide":"bottom","toNode":"7476167612f092a1","toSide":"top"},
+		{"id":"a26533f4c19f2e03","fromNode":"7476167612f092a1","fromSide":"bottom","toNode":"a81db69ffc23ee96","toSide":"top"},
+		{"id":"6efddf6bf2c0d903","fromNode":"53024571520b98f2","fromSide":"bottom","toNode":"7d44ff7600599630","toSide":"top"},
+		{
+			"id":"8a6a857e09a096a0",
+			"fromFloating":false,
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"fcac77b88e03c178",
+			"fromSide":"bottom",
+			"toNode":"6426049fd4eb6336",
+			"toSide":"top"
+		},
+		{
+			"id":"38431bc0012c25d5",
+			"fromFloating":false,
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"fcac77b88e03c178",
+			"fromSide":"bottom",
+			"toNode":"51f82415d3199c1f",
+			"toSide":"top"
+		},
+		{
+			"id":"d6f928ae5b45861d",
+			"toFloating":false,
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"fcac77b88e03c178",
+			"fromSide":"bottom",
+			"toNode":"a39a3943d3335e9f",
+			"toSide":"top"
+		},
+		{
+			"id":"9f8588a5af27f20d",
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"toFloating":false,
+			"fromFloating":false,
+			"fromNode":"146a4714f91ecf7d",
+			"fromSide":"bottom",
+			"toNode":"b20bcf07b90b8653",
+			"toSide":"left"
+		},
+		{
+			"id":"3aafbd40e5426554",
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"toFloating":false,
+			"fromNode":"146a4714f91ecf7d",
+			"fromSide":"bottom",
+			"toNode":"8fb71f449bb65924",
+			"toSide":"left"
+		}
+	],
+	"metadata":{
+		"version":"1.0-1.0",
+		"frontmatter":{}
+	}
+}
