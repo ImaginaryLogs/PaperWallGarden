@@ -33,7 +33,7 @@ Let's pick a standard, high-quality chemistry basis set called **cc-pVDZ** for H
 | aug-cc-pVQZ | [5_s_4_p_3_d_2_f_] → 46 func. | [6_s_5_p_4_d_3_f_2_g_] → 80 func. | [7_s_6_p_4_d_3_f_2_g_] → 84 func. |
 Source: https://en.wikipedia.org/wiki/Basis_set_(chemistry)
 
-## 3. How Many Bits (Classical Computer)?
+## How Many Bits (Classical Computer)?
 
 To solve for the ground state on a classical computer exactly (Full Configuration Interaction), we need to map out every single way to arrange hydrogen's **1 electron** into these **10 available spin-orbitals**.
 

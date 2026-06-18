@@ -1,0 +1,194 @@
+{
+	"nodes":[
+		{"id":"24d2c09eb0baf07e","type":"group","x":-1157,"y":-1030,"width":2314,"height":2060,"label":"Protein Structure Prediction Using Quantum Computers"},
+		{"id":"b6adf5f86b3c08ad","type":"group","x":-1133,"y":-850,"width":1296,"height":900,"label":"Why PSP is Hard"},
+		{"id":"e6d8193cba4a49e6","type":"group","x":-1133,"y":110,"width":1226,"height":920,"label":"Hybrid Workflow"},
+		{"id":"b1277dd84817da16","type":"group","x":183,"y":-850,"width":956,"height":600,"label":"Quantum Methods"},
+		{"id":"fb8b0be8a10c96c9","type":"group","x":183,"y":110,"width":766,"height":680,"label":"Long Term Synthesis"},
+		{
+			"id":"15eca77b4533115e",
+			"type":"text",
+			"text":"#  Zika NS3 P-loop (LHPGAGK)\n\nSeven-residue catalytic P-loop from the Zika virus NS3 helicase, a drug discovery target. Results:\n\n|Method|Backbone RMSD vs crystal|\n|---|---|\n|PEP-FOLD3|1.64 Å|\n|VQE (IBM_Cleveland)|1.78 Å|\n|Classical brute force + Gurobi|1.88 Å|\n|AlphaFold2|3.53 Å|\n\nVQE's heuristic solution beat the classically-solved ground state — because multiple near-degenerate local minima exist, and VQE happened to sample the one structurally closer to the crystal structure.",
+			"styleAttributes":{},
+			"x":-1119,
+			"y":590,
+			"width":660,
+			"height":420
+		},
+		{
+			"id":"34d320959b41e511",
+			"type":"text",
+			"text":"## QAOA / VQE\n\nFrames PSP as Hamiltonian ground-state optimization. A cost Hamiltonian encodes conformational energy; a variational quantum circuit minimizes it. Low-depth QAOA is not expected to beat classical methods, but at higher depth it increasingly approximates Grover speedup. VQE is the specific algorithm used in the paper's experiments.",
+			"styleAttributes":{},
+			"x":653,
+			"y":-830,
+			"width":460,
+			"height":240
+		},
+		{
+			"id":"7b3774a7ecf84e8d",
+			"type":"text",
+			"text":"## Ruggedness → Quantum Advantage\n\nA rugged folding funnel (many local minima, high uncertainty) is precisely the regime where quantum tunneling and interference provide the most leverage. The more rugged the landscape, the harder it is for classical heuristics to escape local minima — and the easier it is for a quantum algorithm to tunnel through barriers. Reduced MSA depth produces more rugged Potts models, directly linking hardness to quantum amenability.",
+			"styleAttributes":{},
+			"x":653,
+			"y":-570,
+			"width":460,
+			"height":300
+		},
+		{
+			"id":"fa46f22133d4c2a1",
+			"type":"text",
+			"text":"## Grover Search\n\nFrames PSP as an unstructured database search over all possible conformers. Grover's algorithm provides a quadratic (√N) speedup over classical exhaustive search. Any quantum search or optimization algorithm can be viewed as a parametrized approximation of Grover's algorithm.",
+			"styleAttributes":{},
+			"x":197,
+			"y":-830,
+			"width":443,
+			"height":240
+		},
+		{
+			"id":"ede03b5cae68409f",
+			"type":"text",
+			"text":"## Miyazawa-Jernigan Statistical Potential\n\nUsed as the cost Hamiltonian. Provides pairwise residue–residue interaction energies for all 20 amino acid combinations, derived from statistical analysis of known protein structures. More expressive than the simple HP (hydrophobic-polar) model, and computationally tractable for coarse-grain quantum circuits.",
+			"styleAttributes":{},
+			"x":197,
+			"y":-570,
+			"width":443,
+			"height":300
+		},
+		{
+			"id":"ac815e2ba9042ac4",
+			"type":"text",
+			"text":"# Sequence Length\nFor a protein of _n_ amino acids, the conformational search space grows as $3^{(2n−2)}$. Even a 20-residue peptide takes ~10 months of continuous MD simulation on modern HPC to fold. Physics-based (ab initio) methods are generally limited to a few dozen residues.",
+			"styleAttributes":{},
+			"x":-1119,
+			"y":-670,
+			"width":406,
+			"height":240
+		},
+		{
+			"id":"01d7e546ac0a0b3b",
+			"type":"text",
+			"text":"## Local disorders\n**Mutations** alter the local chemical space and can dramatically reshape the free energy landscape — even conservative substitutions (e.g. Val → Leu) can introduce new local minima or remove existing ones. AlphaFold2 confidence scores and 3D coordinates degrade significantly for mutated variants.\n\n**Intrinsically Disordered Regions (IDRs)** occupy shallow, multiminima energy landscapes. They exist as structural ensembles, not single conformations. AlphaFold2 predicts them with low pLDDT scores and tends to bias toward a single folded-like conformation, which is often misleading for drug design.",
+			"styleAttributes":{},
+			"x":-693,
+			"y":-670,
+			"width":393,
+			"height":460
+		},
+		{
+			"id":"3535ad1c22c4ad22",
+			"type":"text",
+			"text":"# AlphaFold2 Failure Regimes\n\nThe three axes above converge into a well-defined subspace where DL-based methods perform poorly: mutated variants, orphan proteins, IDPs, and flexible loop regions.",
+			"styleAttributes":{},
+			"x":-1119,
+			"y":-180,
+			"width":406,
+			"height":180
+		},
+		{
+			"id":"61ab57512915f428",
+			"type":"text",
+			"text":"# VQE on Quantum Hardware\n\nThe protein backbone is represented as a coarse-grain Cα-only chain on a tetrahedral lattice (four possible turn directions per residue). VQE minimizes the Miyazawa-Jernigan Ising Hamiltonian to find the lowest-energy lattice conformation. Run on `IBM_Cleveland` (127-qubit Eagle).",
+			"styleAttributes":{},
+			"x":-1119,
+			"y":290,
+			"width":406,
+			"height":260
+		},
+		{
+			"id":"e6f7ae3ffe128227",
+			"type":"text",
+			"text":"# Molecular Mechanics Refinement\n\nA classical force-field energy minimization relaxes the all-atom structure beyond the discrete lattice constraints, allowing finer geometric optimization.",
+			"styleAttributes":{},
+			"x":-293,
+			"y":290,
+			"width":360,
+			"height":260
+		},
+		{
+			"id":"d25e04ce8d12f971",
+			"type":"text",
+			"text":"# Quantum Utility Subspace\nProteins that are small (few dozen residues), carry point mutations, and have shallow MSAs are the best candidates for quantum algorithms to outperform state-of-the-art classical methods. This subspace grows as quantum hardware scales.",
+			"styleAttributes":{},
+			"x":-693,
+			"y":-180,
+			"width":393,
+			"height":220
+		},
+		{
+			"id":"5ef2478362c7d3ab",
+			"type":"text",
+			"text":"# Hybrid Workflow\n\nQuantum computers are not used end-to-end — only the computationally hardest step (conformational search) runs on quantum hardware.",
+			"styleAttributes":{},
+			"x":-1119,
+			"y":130,
+			"width":660,
+			"height":120
+		},
+		{
+			"id":"69ff51457277e9fd",
+			"type":"text",
+			"text":"# Classical Rebuild\n\nThe quantum output (xyz coordinates) is converted to a PDB file, then sidechains are placed classically to reconstruct the full all-atom structure. The backbone geometry from the quantum step is preserved throughout.",
+			"styleAttributes":{},
+			"x":-693,
+			"y":290,
+			"width":380,
+			"height":260
+		},
+		{
+			"id":"fd77130fd081763f",
+			"type":"text",
+			"text":"# Resource Estimation\nQubit count scales quadratically with sequence length (both configuration and interaction qubits).\n\n| Hardware       | Qubits | Max residues (estimated) |\n| -------------- | ------ | ------------------------ |\n| IBM Eagle (R3) | 127    | ~22                      |\n| IBM Osprey     | 433    | ~41                      |\n| IBM Condor     | 1121   | ~67                      |\nWith 10,000 qubits and sufficient gate fidelity, biomedically relevant proteins like hemoglobin (141 residues, ~4,967 entangled qubits estimated) could become tractable.",
+			"styleAttributes":{},
+			"x":197,
+			"y":130,
+			"width":486,
+			"height":400
+		},
+		{
+			"id":"12178784473e588c",
+			"type":"text",
+			"text":"# Long-Term Vision\n\nQuantum and classical methods are framed as synergistic, not competing. Near-term quantum algorithms will mirror classical physics-based methods (lattice models, statistical potentials), eventually progressing toward quantum chemical calculations (DFT, Hartree-Fock) that could simulate exact electron dynamics. The ultimate goal is solving the path-dependent protein folding problem itself — not just structure prediction.",
+			"styleAttributes":{},
+			"x":197,
+			"y":550,
+			"width":726,
+			"height":220
+		},
+		{
+			"id":"400b981ff295638f",
+			"type":"text",
+			"text":"## Why PSP is Hard\nThree compounding axes that increase energy landscape ruggedness and defeat classical deep learning methods.",
+			"styleAttributes":{},
+			"x":-1119,
+			"y":-810,
+			"width":586,
+			"height":120
+		},
+		{
+			"id":"ffc8a7a2c63656d4",
+			"type":"text",
+			"text":"# Protein Structure Prediction Using Quantum Computers\n\n",
+			"styleAttributes":{},
+			"x":-1135,
+			"y":-1010,
+			"width":555,
+			"height":110
+		},
+		{
+			"id":"1cef1b9d20aa8acd",
+			"type":"text",
+			"text":"## Shallow MSA Depth\n\nAlphaFold2's Evoformer extracts coevolutionary signals from Multiple Sequence Alignments (MSAs). Accuracy degrades sharply when the effective sequence count (N_eff) drops below ~30, and diminishing returns set in above ~100. Orphan proteins (~20% of metagenomic sequences) have near-zero MSA depth and produce essentially random predictions (CASP15 GDT_TS ~25, equivalent to a random guess).",
+			"styleAttributes":{},
+			"x":-273,
+			"y":-670,
+			"width":420,
+			"height":340
+		}
+	],
+	"edges":[],
+	"metadata":{
+		"version":"1.0-1.0",
+		"frontmatter":{}
+	}
+}
