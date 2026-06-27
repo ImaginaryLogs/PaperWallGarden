@@ -18,7 +18,7 @@ node_modules/
 .quartz-cache/
 public/
 *.pdf
-content/**/*.pdf
+content/*/*.pdf
 
 
 # Ignore compiled rust target binaries, but DO NOT ignore the pkg folder

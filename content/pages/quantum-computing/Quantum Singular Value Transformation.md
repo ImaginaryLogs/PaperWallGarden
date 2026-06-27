@@ -1,0 +1,1 @@
+**QSVT** (Quantum Singular Value Transformation, 2019) is the modern unification — it subsumes HHL, QPE, Grover's amplitude amplification, and quantum simulation into a single framework based on polynomial transformations of matrix singular values. If you read recent quantum algorithms papers, QSVT is increasingly the language in which algorithms are stated.

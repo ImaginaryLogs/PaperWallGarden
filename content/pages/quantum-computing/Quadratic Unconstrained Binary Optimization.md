@@ -1,0 +1,1 @@
+It is a way of formulating optimization problems as minimizing a quadratic polynomial over binary variables. Many real problems (scheduling, graph coloring, protein folding subproblems) can be mapped to QUBO form. QAOA then approximately solves that QUBO on a quantum computer.

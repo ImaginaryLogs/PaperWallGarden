@@ -1,0 +1,1 @@
+You cannot backpropagate through a quantum circuit the way you do in deep learning — the quantum computer is a physical device, not a differentiable compute graph. But you can compute **exact** gradients analytically by running the circuit with shifted parameters.

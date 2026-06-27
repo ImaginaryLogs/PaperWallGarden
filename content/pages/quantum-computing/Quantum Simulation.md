@@ -1,0 +1,2 @@
+
+You treat the quantum computer as a **digital twin** of a physical system. You map the physical system (like a real molecule) directly onto the quantum register. You then evolve the quantum state over time ($e^{-iHt}$).

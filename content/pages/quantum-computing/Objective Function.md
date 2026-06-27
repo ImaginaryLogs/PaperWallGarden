@@ -1,0 +1,1 @@
+The quantum computer does one thing: run a parameterized circuit and return measurement outcomes. You sample it many times (each sample is a "shot"), and from those shots you estimate the expectation value ⟨ψ(θ)|H|ψ(θ)⟩ — the expected energy of your circuit's output state under the Hamiltonian H.

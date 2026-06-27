@@ -1,0 +1,1 @@
+HHL (Harrow-Hassidim-Lloyd, 2009) solves a system of linear equations Ax = b in O(log N) time versus the classical O(N) — an **exponential speedup**. 

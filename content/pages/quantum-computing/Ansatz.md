@@ -1,0 +1,3 @@
+**Ansatz** (plural: ansätze) is the term for a parameterized circuit chosen to be a good candidate state space for your problem. The word is German for "initial approach." You're not searching all possible quantum states — you're searching inside the manifold defined by your ansatz. 
+
+Choosing a good ansatz is arguably the central engineering decision in variational QC. Bad choice = your solution isn't in the search space. Common ones: hardware-efficient ansatz (shallow, device-native gates), UCCSD (Unitary Coupled Cluster, chemistry-motivated), RealAmplitudes.
