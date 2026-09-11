@@ -1,0 +1,1 @@
+/home/lgyrhadeswslubuntu/PaperWallGarden/wasm-modules/federated-sim2/target/wasm32-unknown-unknown/release/federated_sim2.wasm: /home/lgyrhadeswslubuntu/PaperWallGarden/wasm-modules/federated-sim2/src/lib.rs

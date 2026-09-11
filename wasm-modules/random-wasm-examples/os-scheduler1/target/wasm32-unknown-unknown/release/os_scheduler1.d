@@ -1,0 +1,1 @@
+/home/lgyrhadeswslubuntu/PaperWallGarden/wasm-modules/os-scheduler1/target/wasm32-unknown-unknown/release/os_scheduler1.wasm: /home/lgyrhadeswslubuntu/PaperWallGarden/wasm-modules/os-scheduler1/src/lib.rs

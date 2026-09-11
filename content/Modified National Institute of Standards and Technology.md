@@ -1,3 +1,0 @@
-Centered and scaled
-
-

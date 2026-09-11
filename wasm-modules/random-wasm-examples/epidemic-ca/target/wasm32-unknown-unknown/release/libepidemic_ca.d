@@ -1,0 +1,1 @@
+/home/lgyrhadeswslubuntu/PaperWallGarden/wasm-modules/epidemic-ca/target/wasm32-unknown-unknown/release/libepidemic_ca.rlib: /home/lgyrhadeswslubuntu/PaperWallGarden/wasm-modules/epidemic-ca/src/lib.rs
